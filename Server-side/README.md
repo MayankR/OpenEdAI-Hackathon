@@ -1,5 +1,6 @@
 ## API Reference
 
+- URI(/generate\_qa)
 +request(POST, application/json){
 
     { 'topic1': 'text-something',

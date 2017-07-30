@@ -28,6 +28,7 @@ QuestioningReader/.idea/misc.xml
 QuestioningReader/.idea/modules.xml
 QuestioningReader/.idea/scopes/scope_settings.xml
 QuestioningReader/.idea/vcs.xml
+QuestioningReader/.idea/*
 QuestioningReader/*.iml
 
 # OS-specific files
@@ -39,6 +40,12 @@ QuestioningReader/.Trashes
 QuestioningReader/ehthumbs.db
 QuestioningReader/Thumbs.db
 
-
 # db sqlite
 Server-side/intelliQ/db.sqlite3
+
+# pyc files
+*.pyc
+
+# others
+Server-side/intelliQ/log.txt
+Server-side/venv/
