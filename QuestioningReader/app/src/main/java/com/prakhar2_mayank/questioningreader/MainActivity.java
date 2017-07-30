@@ -61,8 +61,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.select_file:
                 FileReader.getFile(this);
                 break;
-
-
         }
     }
 }

@@ -7,33 +7,20 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
-public class HomeFileFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
+public class HomeFileFragment extends Fragment implements View.OnClickListener {
+    Button selectFileButton;
 
     public HomeFileFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @return A new instance of fragment HomeFileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFileFragment newInstance(String param1) {
+
+    public static HomeFileFragment newInstance() {
         HomeFileFragment fragment = new HomeFileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -41,7 +28,7 @@ public class HomeFileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+
         }
     }
 
@@ -49,7 +36,11 @@ public class HomeFileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_file, container, false);
+        View v = inflater.inflate(R.layout.fragment_home_file, container, false);
+
+        selectFileButton = (Button) v.findViewById(R.id.select_file);
+        selectFileButton.setOnClickListener(this);
+        return v;
     }
 
     @Override
@@ -57,4 +48,12 @@ public class HomeFileFragment extends Fragment {
         super.onDetach();
     }
 
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.select_file:
+                FileReader.getFile(getActivity());
+                break;
+        }
+    }
 }

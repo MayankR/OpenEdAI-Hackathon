@@ -4,10 +4,21 @@
     android:layout_height="match_parent"
     tools:context="com.prakhar2_mayank.questioningreader.HomeFileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Select File" />
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select File" />
+
+        <Button
+            android:id="@+id/select_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select File"/>
+    </LinearLayout>
 
 </FrameLayout>
