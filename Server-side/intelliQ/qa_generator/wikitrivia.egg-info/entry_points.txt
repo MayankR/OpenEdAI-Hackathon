@@ -1,0 +1,4 @@
+
+        [console_scripts]
+        wikitrivia=wikitrivia.scripts.wikitrivia:qa_generator
+    

@@ -38,3 +38,7 @@ QuestioningReader/.Spotlight-V100
 QuestioningReader/.Trashes
 QuestioningReader/ehthumbs.db
 QuestioningReader/Thumbs.db
+
+
+# db sqlite
+Server-side/intelliQ/db.sqlite3

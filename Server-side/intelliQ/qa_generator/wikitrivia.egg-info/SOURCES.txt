@@ -1,0 +1,10 @@
+wikitrivia/__init__.py
+wikitrivia/article.py
+wikitrivia.egg-info/PKG-INFO
+wikitrivia.egg-info/SOURCES.txt
+wikitrivia.egg-info/dependency_links.txt
+wikitrivia.egg-info/entry_points.txt
+wikitrivia.egg-info/requires.txt
+wikitrivia.egg-info/top_level.txt
+wikitrivia/scripts/__init__.py
+wikitrivia/scripts/wikitrivia.py
