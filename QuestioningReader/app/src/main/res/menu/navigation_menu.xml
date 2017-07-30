@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+
+    <item android:title="Home"
+        android:id="@+id/nav_item_home"/>
+
+    <item android:title="Flash Cards"
+        android:id="@+id/nav_item_flash_card"/>
+
+    <item android:title="Reports"
+        android:id="@+id/nav_item_report"/>
+
+
+
+    <item android:title="Others">
+        <menu>
+            <item
+                android:title="About"/>
+            <item
+                android:title="AI in Ed"/>
+        </menu>
+    </item>
+
+    <group android:id="@+id/group_settings_id">
+
+        <item android:title="Settings"/>
+        <item android:title="Help"/>
+    </group>
+
+
+</menu>
