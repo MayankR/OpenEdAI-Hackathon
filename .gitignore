@@ -36,6 +36,12 @@ QuestioningReader/.Trashes
 QuestioningReader/ehthumbs.db
 QuestioningReader/Thumbs.db
 
-
 # db sqlite
 Server-side/intelliQ/db.sqlite3
+
+# pyc files
+*.pyc
+
+# others
+Server-side/intelliQ/log.txt
+Server-side/venv/

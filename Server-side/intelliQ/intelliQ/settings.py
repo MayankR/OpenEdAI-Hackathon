@@ -27,7 +27,7 @@ SECRET_KEY = 'qd_p5-b+sm)mal3inwt8xakw8r8q8x5v*k957gyv$e$@cc=k5x'
 DEBUG = True
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -118,7 +118,7 @@ USE_TZ = True
 
 APPEND_SLASH = True
 
-GEVENT_ADDR_PORT = "0.0.0.0:8123"
+GEVENT_ADDR_PORT = "0.0.0.0:80"
 GEVENT_POOL_SIZE = 100
 
 # Static files (CSS, JavaScript, Images)
