@@ -1,3 +1,6 @@
+#Local testing folder
+/testing/*
+
 # Built application files
 /QuestioningReader/*/build/
 

@@ -27,7 +27,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     void processFile(Uri uri) {
         try {
             String content = FileReader.readTextFromUri(this, uri);
+            Intent it = new Intent(this, ReaderActivity.class);
+            it.putExtra(Utility.DOCUMENT_CONTENT_MESSAGE, content);
             Log.d(TAG, content);
+            startActivity(it);
+
         } catch(IOException e) {
             Toast.makeText(this, "Error reading file contents :(", Toast.LENGTH_SHORT).show();
         }
