@@ -3,6 +3,8 @@ package com.prakhar2_mayank.questioningreader;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -31,11 +33,13 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
-public class HomeActivity extends AppCompatActivity {
+
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static String TAG = "HomeActivity";
     private SectionsPagerAdapter mSectionsPagerAdapter;
     ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
+    NavigationView mNavigationView;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -67,6 +71,26 @@ public class HomeActivity extends AppCompatActivity {
 
         mDrawerToggle.syncState();
 
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_view) ;
+        mNavigationView.setNavigationItemSelectedListener(this);
+
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        mDrawerLayout.closeDrawers();
+        switch(item.getItemId()) {
+            case R.id.nav_item_flash_card:
+                Toast.makeText(this, "Load flash card activity", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_item_report:
+                Toast.makeText(this, "Load report activity", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_item_home:
+                Toast.makeText(this, "Load home activity", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return false;
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -145,13 +169,13 @@ public class HomeActivity extends AppCompatActivity {
 
             switch (position) {
                 case 0:
-                    return HomeWebFragment.newInstance("p1");
+                    return HomeWebFragment.newInstance();
                 case 1:
                     return HomeFileFragment.newInstance();
                 case 2:
                     return HomeScanFragment.newInstance("fp1", "p2");
             }
-            return HomeWebFragment.newInstance("p1");
+            return HomeWebFragment.newInstance();
         }
 
         @Override

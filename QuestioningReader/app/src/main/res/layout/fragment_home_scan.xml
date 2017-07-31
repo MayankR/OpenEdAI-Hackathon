@@ -2,12 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.prakhar2_mayank.questioningreader.HomeScanFragment">
+    tools:context="com.prakhar2_mayank.questioningreader.HomeScanFragment"
+    android:background="#000000">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Scan Document" />
+    <com.prakhar2_mayank.questioningreader.HomeScanFragment.Preview
+        android:id="@+id/camera_preview"
+        android:layout_width="300dp"
+        android:layout_height="300dp">
+
+    </com.prakhar2_mayank.questioningreader.HomeScanFragment.Preview>
+
 
 </FrameLayout>

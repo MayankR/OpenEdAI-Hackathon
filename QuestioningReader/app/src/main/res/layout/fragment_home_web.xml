@@ -2,12 +2,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.prakhar2_mayank.questioningreader.HomeWebFragment">
+    tools:context="com.prakhar2_mayank.questioningreader.HomeWebFragment"
+    android:background="#ffffff">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Search the web!" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+            <EditText
+                android:id="@+id/web_search_query"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:hint="What do you want to learn?"/>
+            <Button
+                android:id="@+id/web_search_button"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GO!"
+                android:background="#dedede"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </FrameLayout>
