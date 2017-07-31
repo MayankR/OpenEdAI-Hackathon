@@ -11,6 +11,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class HomeScanFragment extends Fragment {
     Camera mCamera;
-    Preview mPreview;
+    CameraPreview mPreview;
 
     public HomeScanFragment() {
         // Required empty public constructor
@@ -41,33 +42,45 @@ public class HomeScanFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home_scan, container, false);
-        mPreview = (Preview) v.findViewById(R.id.camera_preview);
-        safeCameraOpen(0);
+        mCamera = getCameraInstance();
+
+        Camera.Parameters params = mCamera.getParameters();
+
+        params.setJpegQuality(10);
+        params.setRotation(270);
+
+
+        mCamera.setParameters(params);
+
+        // Create our Preview view and set it as the content of our activity.
+        mPreview = new CameraPreview(getContext(), mCamera);
+        FrameLayout preview = (FrameLayout) v.findViewById(R.id.camera_preview);
+        preview.addView(mPreview);
+
         return v;
     }
 
-    private boolean safeCameraOpen(int id) {
-        boolean qOpened = false;
-
+    public static Camera getCameraInstance(){
+        Camera c = null;
         try {
-            releaseCameraAndPreview();
-            mCamera = Camera.open(id);
-            mPreview.setCamera(mCamera);
-            qOpened = (mCamera != null);
-        } catch (Exception e) {
-            Log.e(getString(R.string.app_name), "failed to open Camera");
+            int numberOfCameras = Camera.getNumberOfCameras();
+            int cameraId = 0;
+            for (int i = 0; i < numberOfCameras; i++) {
+                Camera.CameraInfo info = new Camera.CameraInfo();
+                Camera.getCameraInfo(i, info);
+                if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                    cameraId = i;
+                    break;
+                }
+            }
+
+            c = Camera.open(cameraId); // attempt to get a Camera instance
+        }
+        catch (Exception e){
             e.printStackTrace();
+            // Camera is not available (in use or does not exist)
         }
-
-        return qOpened;
-    }
-
-    private void releaseCameraAndPreview() {
-        mPreview.setCamera(null);
-        if (mCamera != null) {
-            mCamera.release();
-            mCamera = null;
-        }
+        return c; // returns null if camera is unavailable
     }
 
     @Override
@@ -75,88 +88,4 @@ public class HomeScanFragment extends Fragment {
         super.onDetach();
     }
 
-    public class Preview extends ViewGroup implements SurfaceHolder.Callback {
-
-        SurfaceView mSurfaceView;
-        SurfaceHolder mHolder;
-        List<Camera.Size> mSupportedPreviewSizes;
-
-        Preview(Context context) {
-            super(context);
-
-            mSurfaceView = new SurfaceView(context);
-            addView(mSurfaceView);
-
-            // Install a SurfaceHolder.Callback so we get notified when the
-            // underlying surface is created and destroyed.
-            mHolder = mSurfaceView.getHolder();
-            mHolder.addCallback(this);
-            mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-        }
-
-        public void setCamera(Camera camera) {
-            if (mCamera == camera) { return; }
-
-            stopPreviewAndFreeCamera();
-
-            mCamera = camera;
-
-            if (mCamera != null) {
-                List<Camera.Size> localSizes = mCamera.getParameters().getSupportedPreviewSizes();
-                mSupportedPreviewSizes = localSizes;
-                requestLayout();
-
-                try {
-                    mCamera.setPreviewDisplay(mHolder);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                // Important: Call startPreview() to start updating the preview
-                // surface. Preview must be started before you can take a picture.
-                mCamera.startPreview();
-            }
-        }
-
-        /**
-         * When this function returns, mCamera will be null.
-         */
-        private void stopPreviewAndFreeCamera() {
-
-            if (mCamera != null) {
-                // Call stopPreview() to stop updating the preview surface.
-                mCamera.stopPreview();
-
-                // Important: Call release() to release the camera for use by other
-                // applications. Applications should release the camera immediately
-                // during onPause() and re-open() it during onResume()).
-                mCamera.release();
-
-                mCamera = null;
-            }
-        }
-
-        @Override
-        protected void onLayout(boolean changed, int l, int t, int r, int b) {
-
-        }
-
-        @Override
-        public void surfaceCreated(SurfaceHolder holder) {
-
-        }
-
-        @Override
-        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-        }
-
-        @Override
-        public void surfaceDestroyed(SurfaceHolder holder) {
-            if (mCamera != null) {
-                // Call stopPreview() to stop updating the preview surface.
-                mCamera.stopPreview();
-            }
-        }
-    }
 }

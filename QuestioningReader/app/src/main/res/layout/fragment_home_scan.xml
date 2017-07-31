@@ -5,12 +5,12 @@
     tools:context="com.prakhar2_mayank.questioningreader.HomeScanFragment"
     android:background="#000000">
 
-    <com.prakhar2_mayank.questioningreader.HomeScanFragment.Preview
+    <FrameLayout
         android:id="@+id/camera_preview"
-        android:layout_width="300dp"
-        android:layout_height="300dp">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    </com.prakhar2_mayank.questioningreader.HomeScanFragment.Preview>
+    </FrameLayout>
 
 
 </FrameLayout>
