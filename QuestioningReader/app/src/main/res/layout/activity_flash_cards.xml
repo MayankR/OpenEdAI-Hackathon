@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/themesFrag" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- You can customize this layout.
+         You need to have in your layout a `CardView` with the ID `list_cardId` -->
+        <it.gmariotti.cardslib.library.view.CardListView
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:id="@+id/flashcardsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:fadingEdge="none"
+            card:list_card_layout_resourceID="@layout/list_card_thumbnail_layout"
+            style="@style/list_card.thumbnail"/>
+
+    </RelativeLayout>
+
+    <com.prakhar2_mayank.questioningreader.fab.FloatingActionButton
+        android:id="@+id/addNewFlashCard"
+        android:layout_gravity="bottom|end"
+        android:text="j"
+        android:shadowRadius="40"
+        android:shadowDx="5"
+        android:shadowDy="7"
+        android:textColor="#33ff33"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:layout_width="72dip"
+        android:layout_height="72dip" />
+
+    <!-- Include undo message layout -->
+    <!--<include layout="@layout/list_card_undo_message"/>-->
+</FrameLayout>

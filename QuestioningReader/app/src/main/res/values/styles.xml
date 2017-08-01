@@ -17,4 +17,16 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+
+
+    <style name="ActionBarStyle" parent="android:Widget.Holo.Light.ActionBar">
+        <item name="android:height">@dimen/action_bar_size</item>
+        <item name="android:background">@color/action_bar_color</item>
+        <item name="android:titleTextStyle">@style/ActionBarStyleTitle</item>
+    </style>
+    <style name="ActionBarStyleTitle" parent="android:TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/action_bar_text_color</item>
+    </style>
+
 </resources>
+
