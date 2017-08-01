@@ -19,6 +19,9 @@
                 android:id="@+id/web_search_query"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:inputType="text"
+                android:imeOptions="actionSearch"
                 android:hint="What do you want to learn?"/>
             <Button
                 android:id="@+id/web_search_button"
