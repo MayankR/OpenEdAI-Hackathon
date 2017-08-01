@@ -82,6 +82,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         switch(item.getItemId()) {
             case R.id.nav_item_flash_card:
                 Toast.makeText(this, "Load flash card activity", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomeActivity.this, FlashCardsActivity.class);
+                startActivity(intent);
                 break;
             case R.id.nav_item_report:
                 Toast.makeText(this, "Load report activity", Toast.LENGTH_SHORT).show();

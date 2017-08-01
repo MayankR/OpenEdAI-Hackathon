@@ -5,4 +5,21 @@ package com.prakhar2_mayank.questioningreader;
  */
 public class Utility {
     public static String DOCUMENT_CONTENT_MESSAGE = "document.content.message.intent";
+
+
+    /**
+     * Database Constants
+     */
+    public static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "p2m.db";
+
+
+    /**
+     * FLASHCARDS DATABASE TABLE
+     */
+    public static final String FLASHCARDS_TABLE = "flashcards";
+    public static final String FLASHCARD_ID = "id"; // we need to use _ID because ID is already used by the system.
+    public static final String FLASHCARD_TITLE = "title";
+    public static final String FLASHCARD_CONTENT = "content";
+    public static final String FLASHCARD_ANSWER = "answer";
 }
