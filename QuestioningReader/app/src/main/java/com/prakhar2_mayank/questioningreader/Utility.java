@@ -9,6 +9,8 @@ public class Utility {
     public static String IP = "http://35.195.85.23";
 
     public static String SEARCH_URL = IP + "/search/keyword?query=";
+    public static String QUESTION_URL = IP + "/question";
+    public static String CONVERT_PDF_URL = IP + "/convertpdf/html";
 
     /**
      * Database Constants

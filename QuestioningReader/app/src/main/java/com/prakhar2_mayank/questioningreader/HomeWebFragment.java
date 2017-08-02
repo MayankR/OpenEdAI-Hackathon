@@ -94,7 +94,7 @@ public class HomeWebFragment extends Fragment implements View.OnClickListener {
             e.printStackTrace();
         }
         Log.d("SA", "Hiting search URL: " + url);
-        final ProgressDialog loading = ProgressDialog.show(getContext(), "Updating Cart...", "Please wait...", false, false);
+        final ProgressDialog loading = ProgressDialog.show(getContext(), "Finding content...", "Please wait...", false, false);
         AsyncHttpClient client = new AsyncHttpClient();
         client.post(url, params, new AsyncHttpResponseHandler() {
             @Override

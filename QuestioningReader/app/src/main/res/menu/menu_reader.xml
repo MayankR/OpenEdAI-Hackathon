@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.prakhar2_mayank.questioningreader.ReaderActivity">
+    <item
+        android:id="@+id/action_q_toggle"
+        android:title="Q Mode Off"
+        app:showAsAction="always" />
+</menu>
