@@ -22,7 +22,9 @@
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme">
+        <activity android:name=".ChatBotActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
