@@ -9,7 +9,7 @@
     <!-- Inside colors.xml -->
 
     <color name="action_bar_color">#0277bd</color>
-    <color name="action_bar_text_color">#fa8fbfa3e12529f713b2898a5aa7c474059c19412bfafa</color>
+    <color name="action_bar_text_color">#fafafa</color>
     <color name="drawer_background">#fafafa</color>
     <color name="drawer_selected">#ff9100</color>
 

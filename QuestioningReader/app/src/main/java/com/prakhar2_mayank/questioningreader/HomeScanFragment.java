@@ -17,6 +17,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.Toast;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -107,12 +116,13 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener {
 
             Bitmap bm = BitmapFactory.decodeFile(baseDir + "/qreader/" + fileName);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bm.compress(Bitmap.CompressFormat.JPEG, 10, baos); //bm is the bitmap object
+            bm.compress(Bitmap.CompressFormat.JPEG, 20, baos); //bm is the bitmap object
             byte[] b = baos.toByteArray();
 
-            String userImgB64= Base64.encodeToString(b, Base64.DEFAULT);
-//            Log.d(TAG, userImgB64);
-//            sendImage(getApplicationContext(), adID, userImgB64);
+            String userImgB64 = Base64.encodeToString(b, Base64.DEFAULT);
+//            userImgB64 = userImgB64.substring(5);
+            userImgB64 = "data:image/jpeg;base64," + userImgB64.trim().replaceAll("[\n\r]", "");
+            sendImage(userImgB64);
 
             mCamera.stopPreview();
             try {
@@ -123,6 +133,50 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener {
             }
         }
     };
+
+    void sendImage(String fileB64) {
+        RequestParams params = new RequestParams();
+        params.add("file", fileB64);
+        params.add("name", "jpeg");
+
+        Log.d(TAG, "B64 file: " + fileB64.substring(fileB64.length() - 20) + " :done");
+        Log.d(TAG, "B64 file length: " + fileB64.length());
+        Log.d(TAG, "Params: " + params);
+
+        String url = Utility.OCR_URL;
+
+        Log.d(TAG, "Hitting OCR URL: " + url);
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.setTimeout(7000);
+        client.post(url, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.d(TAG, "Got response success!");
+                try {
+                    JSONObject obj = new JSONObject(new String(responseBody));
+                    Log.d(TAG, obj.toString());
+//                    loadReaderActivity(obj.getString("text"));
+                }
+                catch(JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String errorResponse) {
+//                loading.dismiss();
+                if (statusCode == 404) {
+                    Toast.makeText(getContext(), "404 - Not Found", Toast.LENGTH_LONG).show();
+                } else if (statusCode == 500) {
+                    Toast.makeText(getContext(), "500 - Internal Server Error!", Toast.LENGTH_LONG).show();
+                } else if (statusCode == 403) {
+                    Toast.makeText(getContext(), "403!", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getContext(), throwable.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
 
     void setUpCamera() {
         Thread thread = new Thread() {

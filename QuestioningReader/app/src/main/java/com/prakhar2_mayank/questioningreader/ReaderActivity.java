@@ -3,6 +3,7 @@ package com.prakhar2_mayank.questioningreader;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,12 +28,15 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-public class ReaderActivity extends AppCompatActivity implements View.OnScrollChangeListener {
+public class ReaderActivity extends AppCompatActivity implements View.OnScrollChangeListener, View.OnClickListener {
     WebView contentWV;
     ScrollView contentSV;
     String content;
     private static String TAG = "ReaderActivity";
     boolean qMode = false;
+    FloatingActionButton questionFab;
+    String contentRead = "";
+    int startScroll, curScroll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +60,22 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
         else {
             Toast.makeText(this, "Scroll listener disabled", Toast.LENGTH_SHORT).show();
         }
+
+        questionFab = (FloatingActionButton) findViewById(R.id.fab);
+        questionFab.setOnClickListener(this);
+
+        startReading();
     }
 
     //TODO: Gupta work from here!
     void handleQuestionResponse(JSONObject response) {
 
+    }
+
+    void startReading() {
+        Log.d(TAG, "Start Reading in qMode!");
+        startScroll = curScroll;
+        qMode = true;
     }
 
     void getQuestions(String text) {
@@ -116,6 +131,7 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
                 } else {
                     item.setTitle("Q Mode on");
                     qMode = true;
+                    startReading();
                 }
                 return true;
         }
@@ -126,5 +142,36 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
     public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
         Log.d(TAG, "scrollx: " + scrollX + " oldscrollx: " + oldScrollX);
         Log.d(TAG, "scrolly: " + scrollY + " oldscrolly: " + oldScrollY);
+        curScroll = scrollY;
+
+        Log.d(TAG, "getting read content " + qMode);
+        if(qMode) {
+            int totalHeight = contentSV.getChildAt(0).getHeight();
+            int totalContentLength = content.length();
+            Log.d(TAG, "Content length: " + totalContentLength);
+
+            double startPct = (double) startScroll / (double) totalHeight;
+            startPct += 0.05;
+            double endPct = (double) curScroll / (double) totalHeight;
+            endPct -= 0.05;
+
+            if(startPct >= 1) startPct = 0.96;
+            if(endPct < startPct) endPct = startPct;
+
+            contentRead = content.substring((int) (startPct * totalContentLength),
+                    (int) (endPct * totalContentLength));
+
+            Log.d(TAG, "Content Read: " + contentRead);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.fab:
+                Intent it = new Intent(this, ChatBotActivity.class);
+                startActivity(it);
+                break;
+        }
     }
 }

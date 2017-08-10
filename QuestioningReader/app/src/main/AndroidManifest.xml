@@ -22,9 +22,7 @@
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:theme="@style/AppTheme">
-        <activity android:name=".ChatBotActivity">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,6 +36,9 @@
                 <data android:mimeType="text/plain" />
                 <data android:mimeType="application/pdf" />
             </intent-filter>
+        </activity>
+            <!--android:theme="@style/AppTheme">-->
+        <activity android:name=".ChatBotActivity">
         </activity>
         <activity
             android:name=".FlashCardsActivity"
