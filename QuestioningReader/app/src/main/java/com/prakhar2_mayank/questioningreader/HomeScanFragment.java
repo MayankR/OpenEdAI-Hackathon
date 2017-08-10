@@ -1,6 +1,8 @@
 package com.prakhar2_mayank.questioningreader;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
@@ -15,8 +17,11 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -24,6 +29,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,15 +38,22 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class HomeScanFragment extends Fragment implements View.OnClickListener {
+public class HomeScanFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
     Camera mCamera;
     CameraPreview mPreview;
     FrameLayout previewFL;
     static final String TAG = "HomeScanFragment";
     Button clickScanButton;
+    RelativeLayout scanConceptRL;
+    ListView scanConceptLV;
+    ConceptListAdapter conceptAdapter;
+    ArrayList<String> conceptNameString;
 
     public HomeScanFragment() {
         // Required empty public constructor
@@ -67,6 +80,14 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener {
         previewFL = (FrameLayout) v.findViewById(R.id.camera_preview);
         setUpCamera();
 
+        scanConceptLV = (ListView) v.findViewById(R.id.scan_concept_list);
+        conceptAdapter = new ConceptListAdapter(getContext(), getActivity().getLayoutInflater());
+        scanConceptLV.setAdapter(conceptAdapter);
+        scanConceptLV.setOnItemClickListener(this);
+
+        scanConceptRL = (RelativeLayout) v.findViewById(R.id.scan_concept_rl);
+        scanConceptRL.setVisibility(View.GONE);
+
         clickScanButton = (Button) v.findViewById(R.id.click_scan);
         clickScanButton.setOnClickListener(this);
         return v;
@@ -79,6 +100,23 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener {
         }
         catch(RuntimeException e) {
             Log.d(TAG, "Error clicking pic");
+        }
+    }
+
+    void loadConceptList(JSONObject obj) {
+        try {
+            Log.d(TAG, "Parsing concepts");
+            JSONArray concepts = obj.getJSONObject("text").getJSONArray("concepts");
+            conceptNameString = new ArrayList<String>();
+            for(int i=0;i<concepts.length();i++) {
+                conceptNameString.add(concepts.getJSONObject(i).getString("text"));
+            }
+            conceptAdapter.updateData(conceptNameString);
+            Log.d(TAG, "Loading RL");
+            scanConceptRL.setVisibility(View.VISIBLE);
+        }
+        catch (JSONException e) {
+
         }
     }
 
@@ -113,7 +151,6 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener {
                 Log.d(TAG, "Error accessing file: " + e.getMessage());
             }
 
-
             Bitmap bm = BitmapFactory.decodeFile(baseDir + "/qreader/" + fileName);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bm.compress(Bitmap.CompressFormat.JPEG, 20, baos); //bm is the bitmap object
@@ -147,15 +184,18 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener {
 
         Log.d(TAG, "Hitting OCR URL: " + url);
         AsyncHttpClient client = new AsyncHttpClient();
-        client.setTimeout(7000);
+        final ProgressDialog loading = ProgressDialog.show(getContext(), "Reading the Image...", "Please wait...", false, false);
+        client.setTimeout(20000);
         client.post(url, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                loading.dismiss();
                 Log.d(TAG, "Got response success!");
                 try {
                     JSONObject obj = new JSONObject(new String(responseBody));
                     Log.d(TAG, obj.toString());
-//                    loadReaderActivity(obj.getString("text"));
+                    Log.d(TAG, "got concepts");
+                    loadConceptList(obj);
                 }
                 catch(JSONException e) {
                     e.printStackTrace();
@@ -164,7 +204,7 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, String errorResponse) {
-//                loading.dismiss();
+                loading.dismiss();
                 if (statusCode == 404) {
                     Toast.makeText(getContext(), "404 - Not Found", Toast.LENGTH_LONG).show();
                 } else if (statusCode == 500) {
@@ -188,7 +228,6 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener {
 
                 params.setJpegQuality(10);
                 params.setRotation(90);
-
 
                 mCamera.setParameters(params);
 
@@ -230,6 +269,55 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener {
         return c; // returns null if camera is unavailable
     }
 
+    void showReader(String content) {
+        Intent it = new Intent(getActivity(), ReaderActivity.class);
+        it.putExtra(Utility.DOCUMENT_CONTENT_MESSAGE, content);
+        Log.d(TAG, content);
+        startActivity(it);
+    }
+
+    void getArticle(String q) {
+        RequestParams params = new RequestParams();
+
+        String url = Utility.SEARCH_URL + "error";
+        try {
+            url = Utility.SEARCH_URL + URLEncoder.encode(q, "utf-8");
+        } catch(UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        Log.d("SA", "Hiting search URL: " + url);
+        final ProgressDialog loading = ProgressDialog.show(getContext(), "Finding content...", "Please wait...", false, false);
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post(url, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                loading.dismiss();
+                try {
+                    JSONObject obj = new JSONObject(new String(responseBody));
+                    String docText = obj.getString("text");
+                    showReader(docText);
+                }
+                catch(JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String errorResponse) {
+                loading.dismiss();
+                if (statusCode == 404) {
+                    Toast.makeText(getContext(), "404 - Not Found", Toast.LENGTH_LONG).show();
+                } else if (statusCode == 500) {
+                    Toast.makeText(getContext(), "500 - Internal Server Error!", Toast.LENGTH_LONG).show();
+                } else if (statusCode == 403) {
+                    Toast.makeText(getContext(), "403!", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getContext(), throwable.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -242,5 +330,11 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener {
                 clickPicture();
                 break;
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        String q = conceptNameString.get(position);
+        getArticle(q);
     }
 }

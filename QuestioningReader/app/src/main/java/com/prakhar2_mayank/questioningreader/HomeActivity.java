@@ -1,37 +1,38 @@
 package com.prakhar2_mayank.questioningreader;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.util.ArraySet;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -45,6 +46,8 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Set;
 
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -53,6 +56,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
+    final static int MY_PERMISSIONS_REQUEST_CAMERA = 23;
+//    ArrayList<Uri> uriList;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -62,6 +67,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_home);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -87,6 +97,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view) ;
         mNavigationView.setNavigationItemSelectedListener(this);
 
+        Log.d(TAG, "Checking permission");
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            Log.d(TAG, "Requesting permission");
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_CAMERA);
+        }
     }
 
     @Override
@@ -144,10 +165,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             MimeTypeMap mime = MimeTypeMap.getSingleton();
             String type = mime.getExtensionFromMimeType(cR.getType(uri));
 
+            SharedPreferences myPrefs = getSharedPreferences("HollaMan", 0);
+            SharedPreferences.Editor myPrefsEdit = myPrefs.edit();
+            Set<String> recentFileSet = myPrefs.getStringSet("recent_files", new ArraySet<String>());
+            Set<String> recentFileSetCopy = new ArraySet<String>(recentFileSet);
+            recentFileSetCopy.add(uri.toString());
+            myPrefsEdit.remove("recent_files");
+            myPrefsEdit.putStringSet("recent_files", recentFileSetCopy);
+            myPrefsEdit.commit();
+            Toast.makeText(this, "Added to recent file list", Toast.LENGTH_SHORT).show();
+
             String content = "error loading file...";
             if(type.equals("pdf")) {
                 Toast.makeText(this, "Opened PDF", Toast.LENGTH_SHORT).show();
-                InputStream iStream =   getContentResolver().openInputStream(uri);
+                InputStream iStream = getContentResolver().openInputStream(uri);
                 Log.d(TAG, "getting bytes");
                 byte[] inputData = getBytes(iStream);
                 Log.d(TAG, "got bytes");
@@ -156,6 +187,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
             else {
                 content = FileReader.readTextFromUri(this, uri);
+                content = "<div style='text-align: justify; font-family: Verdana, Geneva, sans-serif; margin-top: 30px; margin-bottom: 200px; word-wrap: break-word; margin-right: 10px; margin-left: 10px;'>" + content + "</div>";
                 loadReaderActivity(content);
             }
 
@@ -185,10 +217,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         Log.d(TAG, "Hitting pdf convert URL: " + url);
         AsyncHttpClient client = new AsyncHttpClient();
+        client.setTimeout(20000);
+        final ProgressDialog loading = ProgressDialog.show(this, "Reading the PDF...", "Please wait...", false, false);
         client.post(url, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Log.d(TAG, "Got response success!");
+                loading.dismiss();
                 try {
                     JSONObject obj = new JSONObject(new String(responseBody));
                     Log.d(TAG, obj.toString());
@@ -201,7 +236,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, String errorResponse) {
-//                loading.dismiss();
+                loading.dismiss();
                 if (statusCode == 404) {
                     Toast.makeText(getApplication(), "404 - Not Found", Toast.LENGTH_LONG).show();
                 } else if (statusCode == 500) {

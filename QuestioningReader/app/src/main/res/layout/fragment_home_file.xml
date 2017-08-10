@@ -4,21 +4,35 @@
     android:layout_height="match_parent"
     tools:context="com.prakhar2_mayank.questioningreader.HomeFileFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/title_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Select File" />
 
         <Button
             android:id="@+id/select_file"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select File"/>
-    </LinearLayout>
+            android:text="Select File"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"/>
+
+        <ImageView
+            android:id="@+id/separator"
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="#000000"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/select_file"/>
+        
+        <ListView
+            android:id="@+id/past_files_list"
+            android:layout_below="@+id/separator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
+    </RelativeLayout>
 
 </FrameLayout>

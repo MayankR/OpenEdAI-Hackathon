@@ -9,7 +9,6 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +21,7 @@ import android.webkit.WebView;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionButton;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -37,7 +37,7 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
 
     private static String TAG = "ReaderActivity";
     boolean qMode = false;
-    FloatingActionButton questionFab;
+    FloatingActionButton questionFab, toggleFab;
     String contentRead = "";
     int startScroll, curScroll;
     ChatBot chatBot = null;
@@ -81,6 +81,9 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
 
         questionFab = (FloatingActionButton) findViewById(R.id.fab);
         questionFab.setOnClickListener(this);
+
+        toggleFab = (FloatingActionButton) findViewById(R.id.toggle_menu_item);
+        toggleFab.setOnClickListener(this);
 
         mShortAnimationDuration = getResources().getInteger(
                 android.R.integer.config_shortAnimTime);
@@ -195,6 +198,16 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
                 if (chatBot == null)
                     chatBot = new ChatBot(currObject);
                 zoomImageFromThumb(questionFab, R.id.chat_expanded);
+                break;
+            case R.id.toggle_menu_item:
+                if(qMode){
+                    toggleFab.setLabelText("Turn On");
+                    qMode = false;
+                } else {
+                    toggleFab.setLabelText("Turn Off");
+                    qMode = true;
+                    startReading();
+                }
                 break;
         }
     }

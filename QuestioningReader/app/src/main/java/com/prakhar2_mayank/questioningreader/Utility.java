@@ -6,7 +6,7 @@ package com.prakhar2_mayank.questioningreader;
 public class Utility {
     public static String DOCUMENT_CONTENT_MESSAGE = "document.content.message.intent";
 
-    public static String IP = "http://35.195.85.23";
+    public static String IP = "http://35.195.235.225";
 
     public static String SEARCH_URL = IP + "/search/keyword?query=";
     public static String QUESTION_URL = IP + "/question";
