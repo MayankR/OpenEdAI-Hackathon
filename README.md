@@ -1,9 +1,9 @@
 # OpenEdAI-Hackathon
-This repository contains the source code for the RedEx Android app and the corresponding nodejs server.
+This repository contains the source code for the ReadEx Android app and the corresponding nodejs server.
 ## What's going on here?
-> What's RedEx?
+> What's ReadEx?
 
-RedEx is an app developed for the OpenEdAI-Hackathon.It is a document reader app.
+ReadEx is an app developed for the OpenEdAI-Hackathon.It is a document reader app.
 
 > How it will help me?
 
