@@ -289,6 +289,7 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
                 if (chatBot == null)
                     chatBot = new ChatBot(currObject);
                 zoomImageFromThumb(questionFab, R.id.chat_expanded);
+                chatBot.start();
                 break;
             case R.id.toggle_menu_item:
                 if(qMode){

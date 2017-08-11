@@ -49,3 +49,7 @@ Server-side/intelliQ/db.sqlite3
 # others
 Server-side/intelliQ/log.txt
 Server-side/venv/
+Server-side/node_modules/
+Server-side/libraries/config
+Server-side/logs
+

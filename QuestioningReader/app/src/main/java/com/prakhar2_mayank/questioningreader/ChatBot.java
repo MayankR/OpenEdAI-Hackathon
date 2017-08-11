@@ -1,5 +1,6 @@
 package com.prakhar2_mayank.questioningreader;
 
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -65,6 +66,10 @@ public class ChatBot {
         });
     }
 
+    public void start() {
+        verifyAnswer("");
+    }
+
     private void scrollMyListViewToBottom() {
         messageListView.post(new Runnable() {
             @Override
@@ -77,7 +82,7 @@ public class ChatBot {
 
     private void verifyAnswer(String userAnswer) {
         if (nextAns == null) {
-            MessagesAdapter.addChatMessage((new BotChatMessage("WelCome")).setTyping(false));
+            MessagesAdapter.addChatMessage((new BotChatMessage("Welcome")).setTyping(false));
             if (questionQueue.isEmpty()) {
                 addDelayedChatBotMessage(new BotChatMessage("Sorry, No Questions For Now"), 1000);
             } else {
@@ -85,6 +90,23 @@ public class ChatBot {
             }
         } else if (nextAns.contains(userAnswer)) {
             MessagesAdapter.addChatMessage((new BotChatMessage("Correct")).setTyping(false));
+
+            if(newQues) {
+                DbHelper dbHelper = new DbHelper(parentActivity);
+
+                SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+                String q = curQues.replaceAll("\"","'");
+                String a = nextAns.toArray()[0].toString().replaceAll("\"","'");
+                String insert1 = "INSERT INTO " + Utility.FLASHCARDS_TABLE + " (" +
+                        Utility.FLASHCARD_TITLE + ", " + Utility.FLASHCARD_CONTENT + ", " +
+                        Utility.FLASHCARD_ANSWER + ", " + Utility.FLASHCARD_CRCT + ") VALUES(\"Book\",\"" +
+                        q + "\",\"" + a + "\", 0);";
+
+                db.execSQL(insert1);
+                newQues = false;
+            }
+
             if (questionQueue.isEmpty()) {
                 addDelayedChatBotMessage(new BotChatMessage("Sorry, No More Questions For Now"), 1000);
             } else {
@@ -100,7 +122,12 @@ public class ChatBot {
 
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-                String insert1 = "INSERT INTO " + Utility.FLASHCARDS_TABLE + " (" + Utility.FLASHCARD_TITLE + ", " + Utility.FLASHCARD_CONTENT + ", " + Utility.FLASHCARD_ANSWER + ", " + Utility.FLASHCARD_CRCT + ") VALUES(\"Book\",\"" + curQues + "\",\"" + nextAns.toArray()[0] + "\", 0);";
+                String q = curQues.replaceAll("\"","'");
+                String a = nextAns.toArray()[0].toString().replaceAll("\"","'");
+                String insert1 = "INSERT INTO " + Utility.FLASHCARDS_TABLE + " (" +
+                        Utility.FLASHCARD_TITLE + ", " + Utility.FLASHCARD_CONTENT + ", " +
+                        Utility.FLASHCARD_ANSWER + ", " + Utility.FLASHCARD_CRCT + ") VALUES(\"Book\",\"" +
+                        q + "\",\"" + a + "\", 0);";
 
                 db.execSQL(insert1);
                 newQues = false;

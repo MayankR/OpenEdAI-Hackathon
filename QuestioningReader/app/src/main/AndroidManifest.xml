@@ -22,7 +22,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HomeActivity"
-            android:label="redEx"
+            android:label="ReadEx"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

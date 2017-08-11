@@ -141,7 +141,7 @@
                     android:layout_height="match_parent"
                     android:elevation="50dp"
                     android:orientation="vertical"
-                    android:background="@color/chat_blue">
+                    android:background="@drawable/chat_background_orig">
                     <!--android:background="@drawable/chat_background_orig"-->
 
 

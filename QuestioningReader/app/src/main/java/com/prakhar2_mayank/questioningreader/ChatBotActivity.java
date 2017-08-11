@@ -66,7 +66,8 @@ public class ChatBotActivity extends AppCompatActivity {
         if (nextAns == null) {
             MessagesAdapter.addChatMessage((new BotChatMessage("WelCome")).setTyping(false));
             if (questionQueue.isEmpty()) {
-                addDelayedChatBotMessage(new BotChatMessage("Sorry, No Questions For Now"), 1000);
+                addDelayedChatBotMessage(new BotChatMessage("Sorry, No Questions " +
+                        "For Now"), 1000);
             } else {
                 addBotMessage(questionQueue.remove());
             }

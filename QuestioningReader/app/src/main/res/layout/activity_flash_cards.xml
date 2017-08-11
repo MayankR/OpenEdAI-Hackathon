@@ -18,24 +18,8 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:fadingEdge="none"
-            card:list_card_layout_resourceID="@layout/list_card_thumbnail_layout"
+            card:list_card_layout_resourceID="@layout/card_layout_new"
             style="@style/list_card.thumbnail"/>
 
     </RelativeLayout>
-
-    <com.prakhar2_mayank.questioningreader.fab.FloatingActionButton
-        android:id="@+id/addNewFlashCard"
-        android:layout_gravity="bottom|end"
-        android:text="j"
-        android:shadowRadius="40"
-        android:shadowDx="5"
-        android:shadowDy="7"
-        android:textColor="#33ff33"
-        android:layout_marginBottom="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_vertical_margin"
-        android:layout_width="72dip"
-        android:layout_height="72dip" />
-
-    <!-- Include undo message layout -->
-    <!--<include layout="@layout/list_card_undo_message"/>-->
 </FrameLayout>

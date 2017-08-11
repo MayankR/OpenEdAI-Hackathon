@@ -21,16 +21,11 @@ module.exports = function(app){
         console.log(req.body.name)
 
         watsonAPI.convertPDFtoHTML(new Buffer(req.body.file,'base64'),accept)
-        //res.json({"sucess":true,"message":"PDF to HTML convert API",'text':'<p>This will be HTML</p>'})
         })
 
     app.all('/getQuestion/',function(req,res){
 
-        /*res.json({"sucess":true,"message":"generate questions API",questions:[
-            {'question':'What is your name?',
-            'answer':['Tumhein matlab','main nahin bataunga','Tom Cruise','Kya karega jaan ke']}
-            ]}
-            )*/
+       
         var text = req.query.text
         var accept = function(answer){
             res.json({'api':'get Question','message':'successful','text':answer})
@@ -52,7 +47,6 @@ module.exports = function(app){
             res.json({'api':'get Related Concepts from image','message':'successful','text':answer})
         }
 
-        //res.json({'api':'get Related Concepts from image','message':'successful'})
         var extImage = req.body.name
         console.log(extImage)
         options =     {
@@ -68,10 +62,9 @@ module.exports = function(app){
     app.all('getText/ocr',function(req,res){
         var text = req.query.text
         var accept = function(answer){
-            res.json({'api':'get Related Concepts from image','message':'successful','text':answer})
+            res.json({'api':'get Text from image','message':'successful','text':answer})
         }
 
-        //res.json({'api':'get Related Concepts from image','message':'successful'})
         var extImage = req.body.name
         console.log(extImage)
         options =     {
@@ -84,10 +77,5 @@ module.exports = function(app){
         questionHelper.ocr.convertocrtotext(req.body.file,options,false,accept)
     })
     
-    app.all('/test',function (req,res) {
-        res.json({'api':'search api','message':'successful','text':"<a href='juioi'>I am hero</a>".replace(/<\/?a[^>]*>/g, "")})
-    })
-
-
 }
 
