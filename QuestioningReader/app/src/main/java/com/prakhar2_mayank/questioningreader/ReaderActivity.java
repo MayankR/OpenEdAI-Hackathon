@@ -26,6 +26,7 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
@@ -55,6 +56,8 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
     static ChatBot chatBot = null;
     LinearLayout chatScreen;
     EditTextPreIme messageHolder;
+    TextView fabBadge;
+    int quesCount = 0;
 
     // Hold a reference to the current animator,
     // so that it can be canceled mid-way.
@@ -97,6 +100,10 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
 
         questionFab = (FloatingActionButton) findViewById(R.id.fab);
         questionFab.setOnClickListener(this);
+
+        fabBadge = (TextView) findViewById(R.id.fab_badge);
+        fabBadge.bringToFront();
+        fabBadge.setVisibility(View.GONE);
 
         toggleFab = (FloatingActionButton) findViewById(R.id.toggle_menu_item);
         toggleFab.setOnClickListener(this);
@@ -166,7 +173,9 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
         if (chatBot == null) {
             chatBot = new ChatBot(currObject);
         }
-        chatBot.addQuestionsToQueue(response);
+        quesCount += chatBot.addQuestionsToQueue(response);
+        fabBadge.setText("" + quesCount);
+        fabBadge.setVisibility(View.VISIBLE);
     }
 
     void startReading() {

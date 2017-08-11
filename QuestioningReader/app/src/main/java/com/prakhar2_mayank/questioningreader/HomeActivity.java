@@ -74,6 +74,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         setContentView(R.layout.activity_home);
 
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
@@ -119,9 +121,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Intent intent = new Intent(HomeActivity.this, FlashCardsActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.nav_item_report:
-                Toast.makeText(this, "Load report activity", Toast.LENGTH_SHORT).show();
-                break;
+//            case R.id.nav_item_report:
+//                Toast.makeText(this, "Load report activity", Toast.LENGTH_SHORT).show();
+//                break;
             case R.id.nav_item_home:
                 Toast.makeText(this, "Load home activity", Toast.LENGTH_SHORT).show();
                 break;
@@ -137,12 +139,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_home, menu);
+//        return true;
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

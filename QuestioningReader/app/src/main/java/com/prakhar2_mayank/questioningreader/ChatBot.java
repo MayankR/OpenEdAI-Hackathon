@@ -92,10 +92,12 @@ public class ChatBot {
         }
     }
 
-    public void addQuestionsToQueue(JSONObject responseFromQuestionApi) {
+    public int addQuestionsToQueue(JSONObject responseFromQuestionApi) {
+        int numQues = 0;
         try {
             if (responseFromQuestionApi.getString("message").equals("successful")) {
                 JSONArray questions = responseFromQuestionApi.getJSONArray("text");
+                numQues = questions.length();
                 for (int i = 0; i < questions.length(); i++) {
                     questionQueue.add(questions.getJSONObject(i));
                 }
@@ -103,6 +105,7 @@ public class ChatBot {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        return numQues;
     }
 
     private void addBotMessage(JSONObject message) {
