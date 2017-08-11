@@ -5,8 +5,8 @@
 - **[<code>GET</code> /convertpdf/html](#convert-pdf-to-html)**
 - **[<code>GET</code> /getQuestion/](#get-questions-from-text)**
 - **[<code>GET</code> /getRelatedConcepts/](#get-related-concepts-from-the-text)**
-- **[<code>GET</code> /getRelatedConcepts/ocr](https://github.com/MayankR/OpenEdAI-Hackathon/blob/master/Server-side/README.md)**
-- **[<code>GET</code> /getText/ocr](https://github.com/MayankR/OpenEdAI-Hackathon/blob/master/Server-side/README.md)**
+- **[<code>GET</code> /getRelatedConcepts/ocr](#get-related-concepts-from-the-text-after-ocr)**
+- **[<code>GET</code> /getText/ocr](#get-text-from-the-ocr)**
 
 ## Search for Keyword ##
 ----
