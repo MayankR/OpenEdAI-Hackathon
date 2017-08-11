@@ -103,7 +103,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/default_bot"
-                android:layout_margin="10dp"/>
+                android:padding="2dp"/>
 
             <LinearLayout
                 android:id="@+id/chat_screen"
