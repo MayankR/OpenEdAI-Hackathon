@@ -2,8 +2,10 @@ package com.prakhar2_mayank.questioningreader;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.style.IconMarginSpan;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -21,6 +23,7 @@ public class ChatBot {
     private Queue<JSONObject> questionQueue;
     private MessagesAdapter messagesAdapter;
     private AppCompatActivity parentActivity;
+    private ListView messageListView;
 
     ChatBot(final AppCompatActivity parentActivity) {
 
@@ -34,7 +37,7 @@ public class ChatBot {
             e.printStackTrace();
         }
 
-        final ListView messageListView = ((ListView) parentActivity.findViewById(R.id.message_list));
+        messageListView = ((ListView) parentActivity.findViewById(R.id.message_list));
         messagesAdapter = MessagesAdapter.getMessagesAdapter(parentActivity);
         messageListView.setAdapter(messagesAdapter);
 
@@ -48,11 +51,9 @@ public class ChatBot {
                     MessagesAdapter.addChatMessage(new UserChatMessage(userAnswer));
                     editText.setText("");
 
-                    if (messageListView.getMaxScrollAmount() == 1) {
-                        messageListView.scrollListBy(1);
-                    }
-
                     verifyAnswer(userAnswer);
+                    //messageListView.scrollTo(0, messageListView.getHeight());
+                    //messageListView.scrollBy(0,60);
                 }
             }
         });
@@ -113,6 +114,8 @@ public class ChatBot {
 
     private void addDelayedChatBotMessage(final BotChatMessage botChatMessage, final long delay) {
         MessagesAdapter.addChatMessage(botChatMessage);
+        final ImageView botImage = (ImageView) parentActivity.findViewById(R.id.bot_image);
+        botImage.setImageResource(R.drawable.typing_bot);
 
         new Thread(new Runnable() {
             @Override
@@ -128,6 +131,7 @@ public class ChatBot {
                     @Override
                     public void run() {
                         messagesAdapter.notifyDataSetChanged();
+                        botImage.setImageResource(R.drawable.default_bot);
                     }
                 });
             }

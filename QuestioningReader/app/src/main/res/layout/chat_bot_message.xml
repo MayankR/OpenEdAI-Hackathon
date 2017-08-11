@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="start"
-    android:clickable="false">
+    android:onClick="hideKeyboard"
+    android:clickable="false"
+    android:longClickable="false">
 
     <ImageView
         android:layout_width="20dp"

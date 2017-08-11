@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     android:paddingBottom="0dp"
-    android:paddingTop="0dp"
-    tools:context="com.prakhar2_mayank.questioningreader.ReaderActivity"
-    android:background="#ffffff">
+    android:paddingTop="0dp">
 
     <ScrollView
         android:id="@+id/content_scroll"
@@ -26,19 +26,18 @@
             android:textSize="17dp"
             android:textColor="#000000" />
     </ScrollView>
+
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:gravity="bottom"
-            android:layout_marginBottom="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginEnd="16dp">
-
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <!--<android.support.design.widget.FloatingActionButton-->
                 <!--android:id="@+id/fab"-->
@@ -84,62 +83,86 @@
              from the bounds of the thumbnail button above, to its final laid-out
              bounds.
              -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
             android:id="@+id/chat_expanded"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:visibility="invisible"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingBottom="10dp"
-            android:paddingTop="150dp">
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/chat_interface"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:background="@color/chat_reader_background"
+            android:gravity="bottom"
             android:orientation="vertical"
-            android:background="@drawable/chat_background">
+            android:paddingBottom="10dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="30dp"
+            android:visibility="invisible"
+            android:weightSum="2">
 
-            <ListView
-                android:id="@+id/message_list"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:divider="@null"
-                android:dividerHeight="0dp">
-            </ListView>
+            <ImageView
+                android:id="@+id/bot_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/default_bot"
+                android:layout_margin="10dp"/>
 
             <LinearLayout
+                android:id="@+id/chat_screen"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="bottom"
-                android:background="@color/white">
-                <EditText
-                    android:id="@+id/new_message"
-                    android:hint="Enter Message Here"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"/>
-                <Button
-                    android:id="@+id/send_message"
-                    android:background="@android:drawable/ic_menu_send"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"/>
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:background="@drawable/chat_background_rounded"
+                android:padding="1dp">
+
+
+                <LinearLayout
+                    android:id="@+id/chat_interface"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:elevation="50dp"
+                    android:orientation="vertical"
+                    android:background="@color/chat_blue">
+                    <!--android:background="@drawable/chat_background_orig"-->
+
+
+                    <ListView
+                        android:id="@+id/message_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:divider="@null"
+                        android:dividerHeight="0dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
+                        android:background="@color/white"
+                        android:gravity="bottom"
+                        android:orientation="horizontal"
+                        android:onClick="doNothing">
+
+                        <com.prakhar2_mayank.questioningreader.Helpers.EditTextPreIme
+                            android:id="@+id/new_message"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:hint="Enter Message Here" />
+
+                        <Button
+                            android:id="@+id/send_message"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@android:drawable/ic_menu_send" />
+                    </LinearLayout>
+
+                </LinearLayout>
             </LinearLayout>
-
         </LinearLayout>
-        </LinearLayout>
-
     </FrameLayout>
-
-
 </RelativeLayout>

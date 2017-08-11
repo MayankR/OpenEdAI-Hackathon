@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -12,13 +13,18 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -26,6 +32,7 @@ import com.github.clans.fab.FloatingActionButton;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.prakhar2_mayank.questioningreader.Helpers.EditTextPreIme;
 
 import org.apache.http.Header;
 import org.json.JSONException;
@@ -35,6 +42,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 public class ReaderActivity extends AppCompatActivity implements View.OnScrollChangeListener, View.OnClickListener {
+
     WebView contentWV;
     ScrollView contentSV;
     String content;
@@ -45,6 +53,8 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
     String contentRead = "";
     int startScroll, curScroll;
     ChatBot chatBot = null;
+    LinearLayout chatScreen;
+    EditTextPreIme messageHolder;
 
     // Hold a reference to the current animator,
     // so that it can be canceled mid-way.
@@ -93,6 +103,53 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
                 android.R.integer.config_shortAnimTime);
 
         startReading();
+
+        chatScreen = (LinearLayout) findViewById(R.id.chat_screen);
+        messageHolder = (EditTextPreIme) findViewById(R.id.new_message);
+        messageHolder.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if (hasFocus) {
+                    Log.d(TAG, "hasFocus");
+                    chatScreen.setLayoutParams(new LinearLayout.LayoutParams(chatScreen.getWidth(), (int) (chatScreen.getHeight() * 1.2 / 2)));
+
+                    final ImageView botImage = (ImageView) findViewById(R.id.bot_image);
+                    botImage.setLayoutParams(new LinearLayout.LayoutParams(botImage.getWidth()/2, botImage.getHeight()/2));
+                } else {
+                    Log.d(TAG, "LostFocus");
+                    chatScreen.setLayoutParams(new LinearLayout.LayoutParams(chatScreen.getWidth(), (int) (chatScreen.getHeight() * 2 / 1.2)));
+
+                    final ImageView botImage = (ImageView) findViewById(R.id.bot_image);
+                    botImage.setLayoutParams(new LinearLayout.LayoutParams(botImage.getWidth() * 2, botImage.getHeight() * 2));
+                }
+            }
+        });
+        messageHolder.setKeyImeChangeListener(new EditTextPreIme.KeyImeChange() {
+            @Override
+            public void onKeyIme(int keyCode, KeyEvent event) {
+                if (KeyEvent.KEYCODE_BACK == event.getKeyCode()) {
+                    Log.d(TAG, "LostFocus");
+                    if (messageHolder.isFocused()) {
+                        messageHolder.clearFocus();
+                    }
+                }
+            }
+        });
+    }
+
+    public void hideKeyboard(View view) {
+        hideKeyboard();
+        chatScreen.setLayoutParams(new LinearLayout.LayoutParams(chatScreen.getWidth(), (int) (chatScreen.getHeight() * 2 / 1.2)));
+
+        final ImageView botImage = (ImageView) findViewById(R.id.bot_image);
+        botImage.setLayoutParams(new LinearLayout.LayoutParams(botImage.getWidth() * 2, botImage.getHeight() * 2));
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(messageHolder.getWindowToken(), 0);
     }
 
     void handleQuestionResponse(JSONObject response) {
@@ -128,8 +185,7 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
                     JSONObject obj = new JSONObject(new String(responseBody));
                     Log.d(TAG, "Response: " + obj);
                     handleQuestionResponse(obj);
-                }
-                catch(JSONException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -324,44 +380,48 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
         expandedImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mCurrentAnimator != null) {
-                    mCurrentAnimator.cancel();
+            hideKeyboard();
+            if (mCurrentAnimator != null) {
+                mCurrentAnimator.cancel();
+            }
+
+            // Animate the four positioning/sizing properties in parallel,
+            // back to their original values.
+            AnimatorSet set = new AnimatorSet();
+            set.play(ObjectAnimator
+                    .ofFloat(expandedImageView, View.X, startBounds.left))
+                    .with(ObjectAnimator
+                            .ofFloat(expandedImageView,
+                                    View.Y,startBounds.top))
+                    .with(ObjectAnimator
+                            .ofFloat(expandedImageView,
+                                    View.SCALE_X, startScaleFinal))
+                    .with(ObjectAnimator
+                            .ofFloat(expandedImageView,
+                                    View.SCALE_Y, startScaleFinal));
+            set.setDuration(mShortAnimationDuration);
+            set.setInterpolator(new DecelerateInterpolator());
+            set.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    thumbView.setAlpha(1f);
+                    expandedImageView.setVisibility(View.GONE);
+                    mCurrentAnimator = null;
                 }
 
-                // Animate the four positioning/sizing properties in parallel,
-                // back to their original values.
-                AnimatorSet set = new AnimatorSet();
-                set.play(ObjectAnimator
-                        .ofFloat(expandedImageView, View.X, startBounds.left))
-                        .with(ObjectAnimator
-                                .ofFloat(expandedImageView,
-                                        View.Y,startBounds.top))
-                        .with(ObjectAnimator
-                                .ofFloat(expandedImageView,
-                                        View.SCALE_X, startScaleFinal))
-                        .with(ObjectAnimator
-                                .ofFloat(expandedImageView,
-                                        View.SCALE_Y, startScaleFinal));
-                set.setDuration(mShortAnimationDuration);
-                set.setInterpolator(new DecelerateInterpolator());
-                set.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        thumbView.setAlpha(1f);
-                        expandedImageView.setVisibility(View.GONE);
-                        mCurrentAnimator = null;
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-                        thumbView.setAlpha(1f);
-                        expandedImageView.setVisibility(View.GONE);
-                        mCurrentAnimator = null;
-                    }
-                });
-                set.start();
-                mCurrentAnimator = set;
-            }
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                    thumbView.setAlpha(1f);
+                    expandedImageView.setVisibility(View.GONE);
+                    mCurrentAnimator = null;
+                }
+            });
+            set.start();
+            mCurrentAnimator = set;
+        }
         });
+    }
+
+    public void doNothing(View view) {
     }
 }
