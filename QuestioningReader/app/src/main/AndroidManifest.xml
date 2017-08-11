@@ -18,10 +18,10 @@
         android:theme="@style/AppTheme" >
         <activity android:name=".MainActivity" >
         </activity>
-        <activity android:name=".HomeActivity"
+        <activity android:name=".ReaderActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ReaderActivity"
+            android:name=".HomeActivity"
             android:label="Questioning Reader"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

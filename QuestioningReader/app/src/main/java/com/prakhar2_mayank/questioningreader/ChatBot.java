@@ -32,7 +32,7 @@ public class ChatBot {
 
         questionQueue = new ArrayDeque<>(10000);
         try {
-            addQuestionsToQueue(new JSONObject("{\"sucess\":true,\"message\":\"generate questions API\",\"questions\":[{\"question\":\"What is your name?\",\"answer\":[\"Tumhein matlab\",\"main nahin bataunga\",\"Tom Cruise\",\"Kya karega jaan ke\"]}]}"));
+            addQuestionsToQueue(new JSONObject("{\"api\":\"get Question\",\"message\":\"successful\",\"text\":[{\"answer\":\"speculation\",\"question\":\"After all the __________ about whether we would have the fight, the last few weeks have seen much name-calling and animosity on both sides, as the rivalry intensifies ahead of the big day.\",\"similar_words\":[\"adverse opinion\",\"guess\",\"side\"],\"title\":\"mytopic\"}]}"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -82,8 +82,8 @@ public class ChatBot {
 
     public void addQuestionsToQueue(JSONObject responseFromQuestionApi) {
         try {
-            if (responseFromQuestionApi.getBoolean("sucess")) {
-                JSONArray questions = responseFromQuestionApi.getJSONArray("questions");
+            if (responseFromQuestionApi.getString("message").equals("successful")) {
+                JSONArray questions = responseFromQuestionApi.getJSONArray("text");
                 for (int i = 0; i < questions.length(); i++) {
                     questionQueue.add(questions.getJSONObject(i));
                 }
@@ -101,8 +101,9 @@ public class ChatBot {
             botChatMessage = new BotChatMessage(message.getString("question"));
 
             nextAns = new HashSet<>();
-            JSONArray answerList = message.getJSONArray("answer");
+            nextAns.add(message.getString("answer"));
 
+            JSONArray answerList = message.getJSONArray("similar_words");
             for (int i = 0; i < answerList.length(); i++) {
                 nextAns.add(answerList.getString(i));
             }
