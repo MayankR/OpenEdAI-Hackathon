@@ -39,6 +39,7 @@ public class ChatBot {
 
         messageListView = ((ListView) parentActivity.findViewById(R.id.message_list));
         messagesAdapter = MessagesAdapter.getMessagesAdapter(parentActivity);
+        MessagesAdapter.clearChat();
         messageListView.setAdapter(messagesAdapter);
 
 

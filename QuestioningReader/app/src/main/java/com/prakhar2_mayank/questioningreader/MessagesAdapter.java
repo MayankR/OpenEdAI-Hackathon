@@ -44,6 +44,12 @@ public class MessagesAdapter extends BaseAdapter {
         return messagesAdapter;
     }
 
+
+    public static void clearChat() {
+        chatMessages = new ArrayList<ChatMessage>();
+        messagesAdapter.notifyDataSetChanged();
+    }
+
     public static void addChatMessage(ChatMessage chatMessage) {
         chatMessages.add(chatMessage);
         messagesAdapter.notifyDataSetChanged();
