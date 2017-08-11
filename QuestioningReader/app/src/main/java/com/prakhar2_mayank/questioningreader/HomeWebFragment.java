@@ -31,7 +31,6 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-
 public class HomeWebFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "HomeWebFragment";
     EditText searchQueryET;

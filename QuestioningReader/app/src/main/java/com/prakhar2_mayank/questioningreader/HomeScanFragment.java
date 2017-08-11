@@ -1,5 +1,7 @@
 package com.prakhar2_mayank.questioningreader;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -86,11 +88,36 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener, 
         scanConceptLV.setOnItemClickListener(this);
 
         scanConceptRL = (RelativeLayout) v.findViewById(R.id.scan_concept_rl);
-        scanConceptRL.setVisibility(View.GONE);
+        hideRL();
 
         clickScanButton = (Button) v.findViewById(R.id.click_scan);
         clickScanButton.setOnClickListener(this);
         return v;
+    }
+
+    void showRL() {
+        scanConceptRL.setVisibility(View.VISIBLE);
+        scanConceptRL.setAlpha(0.0f);
+
+        scanConceptRL.animate()
+                .translationY(scanConceptRL.getHeight())
+                .alpha(1.0f)
+                .setListener(null);
+    }
+
+    void hideRL() {
+        scanConceptRL.animate()
+                .translationY(0)
+                .alpha(0.0f)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        scanConceptRL.setVisibility(View.GONE);
+                    }
+                });
+//        scanConceptRL.setVisibility(View.GONE);
+
     }
 
     void clickPicture() {
@@ -113,7 +140,8 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener, 
             }
             conceptAdapter.updateData(conceptNameString);
             Log.d(TAG, "Loading RL");
-            scanConceptRL.setVisibility(View.VISIBLE);
+//            scanConceptRL.setVisibility(View.VISIBLE);
+            showRL();
         }
         catch (JSONException e) {
 
@@ -228,6 +256,11 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener, 
 
                 params.setJpegQuality(10);
                 params.setRotation(90);
+                if (params.getSupportedFocusModes().contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
+                    params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+                } else {
+                    //Choose another supported mode
+                }
 
                 mCamera.setParameters(params);
 

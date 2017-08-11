@@ -9,7 +9,7 @@ public class Utility {
     public static String IP = "http://35.195.235.225";
 
     public static String SEARCH_URL = IP + "/search/keyword?query=";
-    public static String QUESTION_URL = IP + "/question";
+    public static String QUESTION_URL = IP + "/getquestion?text=";
     public static String CONVERT_PDF_URL = IP + "/convertpdf/html";
     public static String OCR_URL = IP + "/getRelatedConcepts/ocr";
 

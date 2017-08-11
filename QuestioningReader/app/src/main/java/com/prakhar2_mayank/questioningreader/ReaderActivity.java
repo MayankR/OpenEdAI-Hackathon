@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +30,9 @@ import com.loopj.android.http.RequestParams;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 public class ReaderActivity extends AppCompatActivity implements View.OnScrollChangeListener, View.OnClickListener {
     WebView contentWV;
@@ -106,17 +110,23 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
 
     void getQuestions(String text) {
         RequestParams params = new RequestParams();
-        params.add("text", text);
+//        params.add("text", text);
 
-        String url = Utility.QUESTION_URL;
+        String url = Utility.QUESTION_URL + "error";
+        try {
+            url = Utility.QUESTION_URL + URLEncoder.encode(text, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            Toast.makeText(this, "Unable to get question", Toast.LENGTH_SHORT).show();
+        }
 
-        Log.d("SA", "Hiting question URL: " + url);
+        Log.d("SA", "Hiting question URL: " + url + " with text: " + text);
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post(url, params, new AsyncHttpResponseHandler() {
+        client.get(url, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
                     JSONObject obj = new JSONObject(new String(responseBody));
+                    Log.d(TAG, "Response: " + obj);
                     handleQuestionResponse(obj);
                 }
                 catch(JSONException e) {
@@ -177,17 +187,23 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
             Log.d(TAG, "Content length: " + totalContentLength);
 
             double startPct = (double) startScroll / (double) totalHeight;
-            startPct += 0.05;
+            startPct += 0.0005;
             double endPct = (double) curScroll / (double) totalHeight;
-            endPct -= 0.05;
+            endPct -= 0.0005;
 
+            Log.d(TAG, "start: " + startPct + "end: " + endPct);
             if(startPct >= 1) startPct = 0.96;
             if(endPct < startPct) endPct = startPct;
 
             contentRead = content.substring((int) (startPct * totalContentLength),
                     (int) (endPct * totalContentLength));
 
+            contentRead = Html.fromHtml(contentRead).toString();
             Log.d(TAG, "Content Read: " + contentRead);
+            if(contentRead.length() > 500) {
+                getQuestions(contentRead);
+                startScroll = curScroll;
+            }
         }
     }
 

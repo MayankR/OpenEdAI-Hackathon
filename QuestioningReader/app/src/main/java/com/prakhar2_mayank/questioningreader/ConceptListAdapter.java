@@ -60,6 +60,7 @@ public class ConceptListAdapter extends BaseAdapter {
             // create a new "Holder" with subviews
             holder = new ViewHolder();
             holder.conceptName = (TextView) convertView.findViewById(R.id.concept_text);
+            holder.conceptIndex = (TextView) convertView.findViewById(R.id.concept_index);
 
             // hang onto this holder for future recyclage
             convertView.setTag(holder);
@@ -73,11 +74,13 @@ public class ConceptListAdapter extends BaseAdapter {
         String fileUri = (String) getItem(position);
 
         holder.conceptName.setText(fileUri);
+        holder.conceptIndex.setText("" + (position + 1));
 
         return convertView;
     }
 
     private static class ViewHolder {
         public TextView conceptName;
+        public TextView conceptIndex;
     }
 }
