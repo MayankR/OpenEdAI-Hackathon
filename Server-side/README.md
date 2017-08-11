@@ -1,29 +1,9 @@
 ## API Reference
 
-- URI(/generate\_qa)
-+request(POST, application/json){
-
-    { 'topic1': 'text-something',
-      'topic2': 'text2'
-    }
-
-}
-+response(application/json){
-
-[
-    {
-        "answer": "hero",
-        "question": "You die a __________ or stay long enough to become a vilan",
-        "similar_words": [
-            "aristocrat",
-            "boss",
-            "caller",
-            "captain",
-            "cheerleader",
-            "civic leader"
-        ],
-        "title": "topic1"
-        }
-    ]
-
-}
+### Endpoints
+- **[<code>GET</code> /search/keyword](https://github.com/MayankR/OpenEdAI-Hackathon/blob/master/Server-side/README.md)**
+- **[<code>GET</code> /convertpdf/html](https://github.com/MayankR/OpenEdAI-Hackathon/blob/master/Server-side/README.md)**
+- **[<code>GET</code> /getQuestion/](https://github.com/MayankR/OpenEdAI-Hackathon/blob/master/Server-side/README.md)**
+- **[<code>GET</code> /getRelatedConcepts/](https://github.com/MayankR/OpenEdAI-Hackathon/blob/master/Server-side/README.md)**
+- **[<code>GET</code> /getRelatedConcepts/ocr](https://github.com/MayankR/OpenEdAI-Hackathon/blob/master/Server-side/README.md)**
+- **[<code>GET</code> /getText/ocr](https://github.com/MayankR/OpenEdAI-Hackathon/blob/master/Server-side/README.md)**
