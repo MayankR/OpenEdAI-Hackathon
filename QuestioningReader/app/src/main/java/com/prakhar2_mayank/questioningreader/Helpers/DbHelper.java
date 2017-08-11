@@ -33,17 +33,18 @@ public class DbHelper extends SQLiteOpenHelper {
                 Utility.FLASHCARD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 Utility.FLASHCARD_TITLE + " TEXT NOT NULL, " +
                 Utility.FLASHCARD_CONTENT + " TEXT NOT NULL, " +
-                Utility.FLASHCARD_ANSWER + " TEXT NOT NULL " +
+                Utility.FLASHCARD_ANSWER + " TEXT NOT NULL, " +
+                Utility.FLASHCARD_CRCT + " INTEGER NOT NULL " +
                 ");";
 
         db.execSQL(SQL_CREATE_FLASHCARDS_TABLE);
 
         // Temporary inserts
-        String insert1 = "INSERT INTO " + Utility.FLASHCARDS_TABLE + " VALUES(1,\"Pro\",\"Who is pm?\",\"IDK\");";
-        String insert2 = "INSERT INTO " + Utility.FLASHCARDS_TABLE + " VALUES(2,\"Alice\",\"Where is wonderland?\",\"IDK\");";
+//        String insert1 = "INSERT INTO " + Utility.FLASHCARDS_TABLE + " VALUES(1,\"Pro\",\"Who is pm?\",\"IDK\");";
+//        String insert2 = "INSERT INTO " + Utility.FLASHCARDS_TABLE + " VALUES(2,\"Alice\",\"Where is wonderland?\",\"IDK\");";
 
-        db.execSQL(insert1);
-        db.execSQL(insert2);
+//        db.execSQL(insert1);
+//        db.execSQL(insert2);
 
     }
 

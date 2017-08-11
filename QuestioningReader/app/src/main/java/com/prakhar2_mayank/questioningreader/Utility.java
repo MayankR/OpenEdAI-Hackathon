@@ -28,4 +28,5 @@ public class Utility {
     public static final String FLASHCARD_TITLE = "title";
     public static final String FLASHCARD_CONTENT = "content";
     public static final String FLASHCARD_ANSWER = "answer";
+    public static final String FLASHCARD_CRCT = "answercrct";
 }

@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -117,11 +118,22 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener, 
 // ...Irrelevant code for customizing the buttons and title
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
+        if(dialogView.getParent() != null) {
+            Log.d(TAG, "parent: " + dialogView.getParent());
+            ((FrameLayout)dialogView.getParent()).removeView(dialogView);
+        }
         dialogBuilder.setView(dialogView);
 
 //        EditText editText = (EditText) dialogView.findViewById(R.id.label_field);
 //        editText.setText("test label");
-        AlertDialog alertDialog = dialogBuilder.create();
+        AlertDialog alertDialog = dialogBuilder
+                .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
         alertDialog.show();
     }
 

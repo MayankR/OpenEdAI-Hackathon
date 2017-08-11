@@ -1,5 +1,6 @@
 package com.prakhar2_mayank.questioningreader;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.style.IconMarginSpan;
@@ -7,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+
+import com.prakhar2_mayank.questioningreader.Helpers.DbHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +27,8 @@ public class ChatBot {
     private MessagesAdapter messagesAdapter;
     private AppCompatActivity parentActivity;
     private ListView messageListView;
+    String curQues;
+    boolean newQues;
 
     ChatBot(final AppCompatActivity parentActivity) {
 
@@ -89,6 +94,17 @@ public class ChatBot {
             MessagesAdapter.addChatMessage((new BotChatMessage("Wrong Answer")).setTyping(false));
             MessagesAdapter.addChatMessage((new BotChatMessage("Try Again")).setTyping(false));
             scrollMyListViewToBottom();
+
+            if(newQues) {
+                DbHelper dbHelper = new DbHelper(parentActivity);
+
+                SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+                String insert1 = "INSERT INTO " + Utility.FLASHCARDS_TABLE + " (" + Utility.FLASHCARD_TITLE + ", " + Utility.FLASHCARD_CONTENT + ", " + Utility.FLASHCARD_ANSWER + ", " + Utility.FLASHCARD_CRCT + ") VALUES(\"Book\",\"" + curQues + "\",\"" + nextAns.toArray()[0] + "\", 0);";
+
+                db.execSQL(insert1);
+                newQues = false;
+            }
         }
     }
 
@@ -114,6 +130,9 @@ public class ChatBot {
 
         try {
             botChatMessage = new BotChatMessage(message.getString("question"));
+            curQues = message.getString("question");
+
+            newQues = true;
 
             nextAns = new HashSet<>();
             nextAns.add(message.getString("answer"));
