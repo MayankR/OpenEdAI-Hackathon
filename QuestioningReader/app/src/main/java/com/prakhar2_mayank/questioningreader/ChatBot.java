@@ -31,11 +31,11 @@ public class ChatBot {
         nextAns = null;
 
         questionQueue = new ArrayDeque<>(10000);
-        try {
-            addQuestionsToQueue(new JSONObject("{\"api\":\"get Question\",\"message\":\"successful\",\"text\":[{\"answer\":\"speculation\",\"question\":\"After all the __________ about whether we would have the fight, the last few weeks have seen much name-calling and animosity on both sides, as the rivalry intensifies ahead of the big day.\",\"similar_words\":[\"adverse opinion\",\"guess\",\"side\"],\"title\":\"mytopic\"}]}"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            addQuestionsToQueue(new JSONObject("{\"api\":\"get Question\",\"message\":\"successful\",\"text\":[{\"answer\":\"speculation\",\"question\":\"After all the __________ about whether we would have the fight, the last few weeks have seen much name-calling and animosity on both sides, as the rivalry intensifies ahead of the big day.\",\"similar_words\":[\"adverse opinion\",\"guess\",\"side\"],\"title\":\"mytopic\"}]}"));
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
 
         messageListView = ((ListView) parentActivity.findViewById(R.id.message_list));
         messagesAdapter = MessagesAdapter.getMessagesAdapter(parentActivity);
@@ -59,6 +59,16 @@ public class ChatBot {
         });
     }
 
+    private void scrollMyListViewToBottom() {
+        messageListView.post(new Runnable() {
+            @Override
+            public void run() {
+                // Select the last row so it will scroll into view...
+                messageListView.setSelection(messagesAdapter.getCount() - 1);
+            }
+        });
+    }
+
     private void verifyAnswer(String userAnswer) {
         if (nextAns == null) {
             MessagesAdapter.addChatMessage((new BotChatMessage("WelCome")).setTyping(false));
@@ -77,6 +87,7 @@ public class ChatBot {
         } else {
             MessagesAdapter.addChatMessage((new BotChatMessage("Wrong Answer")).setTyping(false));
             MessagesAdapter.addChatMessage((new BotChatMessage("Try Again")).setTyping(false));
+            scrollMyListViewToBottom();
         }
     }
 
@@ -114,6 +125,7 @@ public class ChatBot {
     }
 
     private void addDelayedChatBotMessage(final BotChatMessage botChatMessage, final long delay) {
+        scrollMyListViewToBottom();
         MessagesAdapter.addChatMessage(botChatMessage);
         final ImageView botImage = (ImageView) parentActivity.findViewById(R.id.bot_image);
         botImage.setImageResource(R.drawable.typing_bot);
@@ -133,6 +145,7 @@ public class ChatBot {
                     public void run() {
                         messagesAdapter.notifyDataSetChanged();
                         botImage.setImageResource(R.drawable.default_bot);
+                        scrollMyListViewToBottom();
                     }
                 });
             }

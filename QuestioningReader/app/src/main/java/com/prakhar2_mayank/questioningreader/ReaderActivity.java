@@ -81,6 +81,8 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
         Intent it = getIntent();
         content = it.getStringExtra(Utility.DOCUMENT_CONTENT_MESSAGE);
 
+        resetChatBot();
+
         contentWV = (WebView) findViewById(R.id.document_content);
         contentWV.loadData(content, "text/html; charset=utf-8", "utf-8");
 
@@ -102,7 +104,6 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
         mShortAnimationDuration = getResources().getInteger(
                 android.R.integer.config_shortAnimTime);
 
-        chatBot = new ChatBot(currObject);
 
         startReading();
 
@@ -142,7 +143,7 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
 
     public static void resetChatBot() {
         if (ReaderActivity.currObject == null){
-            ReaderActivity.currObject = new ReaderActivity();
+            return; //ReaderActivity.currObject = new ReaderActivity();
         }
         ReaderActivity.chatBot = new ChatBot(ReaderActivity.currObject);
     }
