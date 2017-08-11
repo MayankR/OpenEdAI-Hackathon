@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
+
     <it.gmariotti.cardslib.library.view.CardView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:card="http://schemas.android.com/apk/res-auto"
@@ -10,7 +11,6 @@
         style="@style/list_card.thumbnail"
         card:card_layout_resourceID="@layout/card_thumbnail_layout_new"
         />
-
 
     <it.gmariotti.cardslib.library.view.CardView
         xmlns:android="http://schemas.android.com/apk/res/android"

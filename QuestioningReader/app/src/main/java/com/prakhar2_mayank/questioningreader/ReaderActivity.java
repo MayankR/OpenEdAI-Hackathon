@@ -289,6 +289,7 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
                 if (chatBot == null)
                     chatBot = new ChatBot(currObject);
                 zoomImageFromThumb(questionFab, R.id.chat_expanded);
+                chatBot.start();
                 break;
             case R.id.toggle_menu_item:
                 if(qMode){
@@ -367,21 +368,16 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
 
         // Construct and run the parallel animation of the four translation and
         // scale properties (X, Y, SCALE_X, and SCALE_Y).
-
-//        AnimatorSet set = new AnimatorSet();
-//        set
-//                .play(ObjectAnimator.ofFloat(expandedImageView, View.X,
-//                        startBounds.left, finalBounds.left))
-//                .with(ObjectAnimator.ofFloat(expandedImageView, View.Y,
-//                        startBounds.top, finalBounds.top))
-//                .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_X,
-//                        startScale, 1f)).with(ObjectAnimator.ofFloat(expandedImageView,
-//                View.SCALE_Y, startScale, 1f));
-
         AnimatorSet set = new AnimatorSet();
-        set.play(ObjectAnimator.ofFloat(expandedImageView, View.ROTATION_Y, 0, -180)).with(ObjectAnimator.ofFloat(expandedImageView, View.ALPHA, 1, 0));
-
-        set.setDuration(mShortAnimationDuration*10  );
+        set
+                .play(ObjectAnimator.ofFloat(expandedImageView, View.X,
+                        startBounds.left, finalBounds.left))
+                .with(ObjectAnimator.ofFloat(expandedImageView, View.Y,
+                        startBounds.top, finalBounds.top))
+                .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_X,
+                        startScale, 1f)).with(ObjectAnimator.ofFloat(expandedImageView,
+                View.SCALE_Y, startScale, 1f));
+        set.setDuration(mShortAnimationDuration);
         set.setInterpolator(new DecelerateInterpolator());
         set.addListener(new AnimatorListenerAdapter() {
             @Override

@@ -79,11 +79,6 @@ public class FlashCardsActivity extends AppCompatActivity {
 
         cardAnswerHashMap = new HashMap<>();
 
-        // Initialize the FloatingActionButton and set it's colors
-        buttonFab = (FloatingActionButton) findViewById(R.id.addNewFlashCard);
-        buttonFab.setColor(getResources().getColor(R.color.action_bar_color));
-        buttonFab.setTextColor(getResources().getColor(R.color.action_bar_text_color));
-
         //populate cards
         mFlashCardsList = (CardListView) findViewById(R.id.flashcardsList);
         dbCardsList = getAllFlashCards();

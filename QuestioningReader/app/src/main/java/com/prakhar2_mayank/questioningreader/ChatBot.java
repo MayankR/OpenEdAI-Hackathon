@@ -60,6 +60,10 @@ public class ChatBot {
         });
     }
 
+    public void start() {
+        verifyAnswer("");
+    }
+
     private void scrollMyListViewToBottom() {
         messageListView.post(new Runnable() {
             @Override
@@ -72,7 +76,7 @@ public class ChatBot {
 
     private void verifyAnswer(String userAnswer) {
         if (nextAns == null) {
-            MessagesAdapter.addChatMessage((new BotChatMessage("WelCome")).setTyping(false));
+            MessagesAdapter.addChatMessage((new BotChatMessage("Welcome")).setTyping(false));
             if (questionQueue.isEmpty()) {
                 addDelayedChatBotMessage(new BotChatMessage("Sorry, No Questions For Now"), 1000);
             } else {
