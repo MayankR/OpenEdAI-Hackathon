@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             it.putExtra(Utility.DOCUMENT_CONTENT_MESSAGE, content);
             Log.d(TAG, content);
             startActivity(it);
+            ReaderActivity.resetChatBot();
 
         } catch(IOException e) {
             Toast.makeText(this, "Error reading file contents :(", Toast.LENGTH_SHORT).show();

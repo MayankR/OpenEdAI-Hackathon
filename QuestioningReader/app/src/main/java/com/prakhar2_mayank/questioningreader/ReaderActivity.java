@@ -52,7 +52,7 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
     FloatingActionButton questionFab, toggleFab;
     String contentRead = "";
     int startScroll, curScroll;
-    ChatBot chatBot = null;
+    static ChatBot chatBot = null;
     LinearLayout chatScreen;
     EditTextPreIme messageHolder;
 
@@ -65,7 +65,7 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
     // very frequently.
     private int mShortAnimationDuration;
 
-    private ReaderActivity currObject;
+    public static ReaderActivity currObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +102,8 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
         mShortAnimationDuration = getResources().getInteger(
                 android.R.integer.config_shortAnimTime);
 
+        chatBot = new ChatBot(currObject);
+
         startReading();
 
         chatScreen = (LinearLayout) findViewById(R.id.chat_screen);
@@ -136,6 +138,10 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
                 }
             }
         });
+    }
+
+    public static void resetChatBot() {
+        ReaderActivity.chatBot = new ChatBot(ReaderActivity.currObject);
     }
 
     public void hideKeyboard(View view) {
@@ -256,7 +262,7 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
 
             contentRead = Html.fromHtml(contentRead).toString();
             Log.d(TAG, "Content Read: " + contentRead);
-            if(contentRead.length() > 500) {
+            if(contentRead.length() > 1000) {
                 getQuestions(contentRead);
                 startScroll = curScroll;
             }

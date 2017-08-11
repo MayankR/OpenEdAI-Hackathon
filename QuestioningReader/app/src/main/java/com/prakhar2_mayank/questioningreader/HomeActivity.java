@@ -202,6 +202,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         it.putExtra(Utility.DOCUMENT_CONTENT_MESSAGE, content);
         Log.d(TAG, content);
         startActivity(it);
+        ReaderActivity.resetChatBot();
     }
 
     void uploadPDF(String fileB64) {
