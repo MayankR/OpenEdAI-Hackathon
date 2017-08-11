@@ -41,9 +41,13 @@ public class DbHelper extends SQLiteOpenHelper {
         // Temporary inserts
         String insert1 = "INSERT INTO " + Utility.FLASHCARDS_TABLE + " VALUES(1,\"Pro\",\"Who is pm?\",\"IDK\");";
         String insert2 = "INSERT INTO " + Utility.FLASHCARDS_TABLE + " VALUES(2,\"Alice\",\"Where is wonderland?\",\"IDK\");";
+        String insert3 = "INSERT INTO " + Utility.FLASHCARDS_TABLE + " VALUES(3,\"Alice\",\"Where is wonderland?\",\"IDK\");";
+        String insert4 = "INSERT INTO " + Utility.FLASHCARDS_TABLE + " VALUES(4,\"Alice\",\"Where is wonderland?\",\"IDK\");";
 
         db.execSQL(insert1);
         db.execSQL(insert2);
+        db.execSQL(insert3);
+        db.execSQL(insert4);
 
     }
 

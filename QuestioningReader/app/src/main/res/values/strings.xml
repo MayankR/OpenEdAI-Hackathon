@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">QuestioningReader</string>
+    <string name="app_name">Tutor Reader</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
