@@ -81,6 +81,7 @@ public class HomeWebFragment extends Fragment implements View.OnClickListener {
         it.putExtra(Utility.DOCUMENT_CONTENT_MESSAGE, content);
         Log.d(TAG, content);
         startActivity(it);
+        ReaderActivity.resetChatBot();
     }
 
     void getArticle(String q) {

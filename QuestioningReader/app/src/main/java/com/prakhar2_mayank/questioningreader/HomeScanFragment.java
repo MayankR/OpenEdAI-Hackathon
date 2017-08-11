@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -56,6 +58,7 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener, 
     ListView scanConceptLV;
     ConceptListAdapter conceptAdapter;
     ArrayList<String> conceptNameString;
+    View dialogView;
 
     public HomeScanFragment() {
         // Required empty public constructor
@@ -82,7 +85,13 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener, 
         previewFL = (FrameLayout) v.findViewById(R.id.camera_preview);
         setUpCamera();
 
-        scanConceptLV = (ListView) v.findViewById(R.id.scan_concept_list);
+//        scanConceptLV = (ListView) v.findViewById(R.id.scan_concept_list);
+//        conceptAdapter = new ConceptListAdapter(getContext(), getActivity().getLayoutInflater());
+//        scanConceptLV.setAdapter(conceptAdapter);
+//        scanConceptLV.setOnItemClickListener(this);
+
+        dialogView = inflater.inflate(R.layout.concept_alert, null);
+        scanConceptLV = (ListView) dialogView.findViewById(R.id.scan_concept_list);
         conceptAdapter = new ConceptListAdapter(getContext(), getActivity().getLayoutInflater());
         scanConceptLV.setAdapter(conceptAdapter);
         scanConceptLV.setOnItemClickListener(this);
@@ -96,27 +105,39 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener, 
     }
 
     void showRL() {
-        scanConceptRL.setVisibility(View.VISIBLE);
-        scanConceptRL.setAlpha(0.0f);
+//        scanConceptRL.setVisibility(View.VISIBLE);
+//        scanConceptRL.setAlpha(0.0f);
+//
+//        scanConceptRL.animate()
+//                .translationY(-0.1f * scanConceptRL.getHeight())
+//                .alpha(1.0f)
+//                .setListener(null);
 
-        scanConceptRL.animate()
-                .translationY(scanConceptRL.getHeight())
-                .alpha(1.0f)
-                .setListener(null);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+// ...Irrelevant code for customizing the buttons and title
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+
+        dialogBuilder.setView(dialogView);
+
+//        EditText editText = (EditText) dialogView.findViewById(R.id.label_field);
+//        editText.setText("test label");
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
     }
 
     void hideRL() {
-        scanConceptRL.animate()
-                .translationY(0)
-                .alpha(0.0f)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        scanConceptRL.setVisibility(View.GONE);
-                    }
-                });
-//        scanConceptRL.setVisibility(View.GONE);
+//        scanConceptRL.setVisibility(View.VISIBLE);
+//        scanConceptRL.animate()
+//                .translationY(-300)
+//                .alpha(0.0f)
+//                .setListener(new AnimatorListenerAdapter() {
+//                    @Override
+//                    public void onAnimationEnd(Animator animation) {
+//                        super.onAnimationEnd(animation);
+//                        scanConceptRL.setVisibility(View.GONE);
+//                    }
+//                });
+        scanConceptRL.setVisibility(View.GONE);
 
     }
 
@@ -307,6 +328,7 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener, 
         it.putExtra(Utility.DOCUMENT_CONTENT_MESSAGE, content);
         Log.d(TAG, content);
         startActivity(it);
+        ReaderActivity.resetChatBot();
     }
 
     void getArticle(String q) {
