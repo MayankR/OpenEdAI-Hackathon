@@ -19,4 +19,5 @@
     <color name="chat_reader_background">#33000000</color>
     <color name="chat_blue">#c5d640de</color>
     <color name="transparent">#00000000</color>
+    <color name="green">#FF27AE60</color>
 </resources>
