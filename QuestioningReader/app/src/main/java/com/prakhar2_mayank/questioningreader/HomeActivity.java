@@ -117,7 +117,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         mDrawerLayout.closeDrawers();
         switch(item.getItemId()) {
             case R.id.nav_item_flash_card:
-                Toast.makeText(this, "Load flash card activity", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Load flash card activity", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(HomeActivity.this, FlashCardsActivity.class);
                 startActivity(intent);
                 break;
@@ -125,7 +125,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 //                Toast.makeText(this, "Load report activity", Toast.LENGTH_SHORT).show();
 //                break;
             case R.id.nav_item_home:
-                Toast.makeText(this, "Load home activity", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Load home activity", Toast.LENGTH_SHORT).show();
                 break;
         }
         return false;
@@ -134,7 +134,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Toast.makeText(getApplication(), "Clicked: " + position, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplication(), "Clicked: " + position, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -175,11 +175,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             myPrefsEdit.remove("recent_files");
             myPrefsEdit.putStringSet("recent_files", recentFileSetCopy);
             myPrefsEdit.commit();
-            Toast.makeText(this, "Added to recent file list", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Added to recent file list", Toast.LENGTH_SHORT).show();
 
             String content = "error loading file...";
             if(type.equals("pdf")) {
-                Toast.makeText(this, "Opened PDF", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Opened PDF", Toast.LENGTH_SHORT).show();
                 InputStream iStream = getContentResolver().openInputStream(uri);
                 Log.d(TAG, "getting bytes");
                 byte[] inputData = getBytes(iStream);
@@ -195,7 +195,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
         } catch(IOException e) {
-            Toast.makeText(this, "Error reading file contents :(", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Error reading file contents", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -277,7 +277,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Uri uri = null;
             if (resultData != null) {
                 uri = resultData.getData();
-                Toast.makeText(this, "Uri: " + uri.toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Uri: " + uri.toString(), Toast.LENGTH_SHORT).show();
                 processFile(uri);
             }
         }

@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Uri uri = null;
             if (resultData != null) {
                 uri = resultData.getData();
-                Toast.makeText(this, "Uri: " + uri.toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Uri: " + uri.toString(), Toast.LENGTH_SHORT).show();
                 processFile(uri);
             }
         }

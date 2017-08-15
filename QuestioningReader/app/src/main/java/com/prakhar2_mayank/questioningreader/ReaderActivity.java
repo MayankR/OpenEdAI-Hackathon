@@ -91,11 +91,11 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
 
         contentSV = (ScrollView) findViewById(R.id.content_scroll);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Toast.makeText(this, "Scroll listener enabled", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Scroll listener enabled", Toast.LENGTH_SHORT).show();
             contentSV.setOnScrollChangeListener(this);
         }
         else {
-            Toast.makeText(this, "Scroll listener disabled", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Scroll listener disabled", Toast.LENGTH_SHORT).show();
         }
 
         questionFab = (FloatingActionButton) findViewById(R.id.fab);
