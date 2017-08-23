@@ -1,40 +1,60 @@
 package com.prakhar2_mayank.questioningreader;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.database.DatabaseUtils;
+import android.animation.Animator;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
+import com.prakhar2_mayank.questioningreader.Helpers.DbHelper;
+import com.prakhar2_mayank.questioningreader.fab.FloatingActionButton;
 
-import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
+import it.gmariotti.cardslib.library.view.CardListView;
 
 public class HomeWebFragment extends Fragment implements View.OnClickListener {
-    private static final String TAG = "HomeWebFragment";
-    EditText searchQueryET;
-    Button searchButton;
+
+    private View layoutView;
+
+    private List<Card> mCardsList;
+    private List<FlashCardItem> dbCardsList;
+    private CardListView mFlashCardsList;
+    private CardArrayAdapter mCardAdapter;
+    private FloatingActionButton buttonFab;
+
+    private HashMap<Card, String> cardAnswerHashMap;
+
+    public List<FlashCardItem> getAllFlashCards() {
+        List<FlashCardItem> flashcards = new ArrayList<FlashCardItem>();
+        String selectQuery = "SELECT * FROM " + Utility.FLASHCARDS_TABLE;
+
+        DbHelper dbHelper = new DbHelper(getActivity());
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if(cursor.moveToNext()) {
+            do {
+                FlashCardItem flashCardItem = new FlashCardItem();
+                flashCardItem.setId(cursor.getLong(cursor.getColumnIndex(Utility.FLASHCARD_ID)));
+                flashCardItem.setTitle(cursor.getString(cursor.getColumnIndex(Utility.FLASHCARD_TITLE)));
+                flashCardItem.setContent(cursor.getString(cursor.getColumnIndex(Utility.FLASHCARD_CONTENT)));
+                flashCardItem.setAnswer(cursor.getString(cursor.getColumnIndex(Utility.FLASHCARD_ANSWER)));
+                flashcards.add(flashCardItem);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        dbHelper.close();
+        return flashcards;
+    }
 
     public HomeWebFragment() {
         // Required empty public constructor
@@ -57,78 +77,26 @@ public class HomeWebFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_home_web, container, false);
-        searchQueryET = (EditText) v.findViewById(R.id.web_search_query);
-        searchQueryET.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    doSearch();
-                    return true;
-                }
-                return false;
-            }
-        });
+        View v = inflater.inflate(R.layout.activity_flash_cards, container, false);
+        layoutView = v;
 
-        searchButton = (Button) v.findViewById(R.id.web_search_button);
-        searchButton.setOnClickListener(this);
+        cardAnswerHashMap = ((HomeActivity) getActivity()).cardAnswerHashMap;
+
+        //populate cards
+        mFlashCardsList = (CardListView) v.findViewById(R.id.flashcardsList);
+        dbCardsList = getAllFlashCards();
+        mCardsList = new ArrayList<>();
+        for (int i = 0; i < dbCardsList.size(); i++) {
+            Card card = new Card(getActivity());
+            cardAnswerHashMap.put(card, dbCardsList.get(i).getAnswer());
+            card.setTitle(dbCardsList.get(i).getTitle()+'\n' + dbCardsList.get(i).getContent());
+            mCardsList.add(card);
+        }
+        mCardAdapter = new CardArrayAdapter(getActivity(), mCardsList);
+        mCardAdapter.setEnableUndo(true);
+        mFlashCardsList.setAdapter(mCardAdapter);
 
         return v;
-    }
-
-    void showReader(String content) {
-        Intent it = new Intent(getActivity(), ReaderActivity.class);
-        it.putExtra(Utility.DOCUMENT_CONTENT_MESSAGE, content);
-        Log.d(TAG, content);
-        startActivity(it);
-        ReaderActivity.resetChatBot();
-    }
-
-    void getArticle(String q) {
-        RequestParams params = new RequestParams();
-
-        String url = Utility.SEARCH_URL + "error";
-        try {
-            url = Utility.SEARCH_URL + URLEncoder.encode(q, "utf-8");
-        } catch(UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        Log.d("SA", "Hiting search URL: " + url);
-        final ProgressDialog loading = ProgressDialog.show(getContext(), "Finding content...", "Please wait...", false, false);
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.post(url, params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                loading.dismiss();
-                try {
-                    JSONObject obj = new JSONObject(new String(responseBody));
-                    String docText = obj.getString("text");
-                    showReader(docText);
-                }
-                catch(JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, String errorResponse) {
-                loading.dismiss();
-                if (statusCode == 404) {
-                    Toast.makeText(getContext(), "404 - Not Found", Toast.LENGTH_LONG).show();
-                } else if (statusCode == 500) {
-                    Toast.makeText(getContext(), "500 - Internal Server Error!", Toast.LENGTH_LONG).show();
-                } else if (statusCode == 403) {
-                    Toast.makeText(getContext(), "403!", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getContext(), throwable.toString(), Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    }
-
-    void doSearch() {
-        String query = searchQueryET.getText().toString();
-        getArticle(query);
     }
 
     @Override
@@ -138,10 +106,6 @@ public class HomeWebFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()) {
-            case R.id.web_search_button:
-                doSearch();
-                break;
-        }
+
     }
 }

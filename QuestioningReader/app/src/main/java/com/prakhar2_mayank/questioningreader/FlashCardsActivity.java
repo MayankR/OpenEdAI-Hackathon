@@ -133,8 +133,9 @@ public class FlashCardsActivity extends AppCompatActivity {
     private void zoomImageFromThumb(final View thumbView, final CardView expandedImageView) {
         // If there's an animation in progress, cancel it
         // immediately and proceed with this one.
-        if (mCurrentAnimator != null) {
-            mCurrentAnimator.cancel();
+        // TODO: BAD HACK NEED TO REMOVE
+        while (mCurrentAnimator != null) {
+            //mCurrentAnimator.cancel();
         }
 
         AnimatorSet set = new AnimatorSet();
@@ -172,8 +173,9 @@ public class FlashCardsActivity extends AppCompatActivity {
     private void zoomImageFromThumbRev(final View thumbView, final CardView expandedImageView) {
         // If there's an animation in progress, cancel it
         // immediately and proceed with this one.
-        if (mCurrentAnimator != null) {
-            mCurrentAnimator.cancel();
+        // TODO: BAD HACK NEED TO REMOVE
+        while (mCurrentAnimator != null) {
+            //mCurrentAnimator.cancel();
         }
 
         AnimatorSet set = new AnimatorSet();

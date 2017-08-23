@@ -23,18 +23,6 @@ public class MessagesAdapter extends BaseAdapter {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = (AppCompatActivity) context;
         chatMessages = new ArrayList<>();
-        /*
-        chatMessages.add(new BotChatMessage("fwfewfwioioioipiiof"));
-        chatMessages.add(new UserChatMessage("dddwdwdwd"));
-        chatMessages.add(new BotChatMessage("fwfewfwioioioipiiof"));
-        chatMessages.add(new UserChatMessage("dddwdwdwd"));
-        chatMessages.add(new BotChatMessage("fwfewfwioioioipiiof"));
-        chatMessages.add(new UserChatMessage("dddwdwdwd"));
-        chatMessages.add(new BotChatMessage("fwfewfwioioioipiiof"));
-        chatMessages.add(new UserChatMessage("dddwdwdwd"));
-        chatMessages.add(new BotChatMessage("fwfewfwioioioipiioffwfewfwioioioipiioffwfewfwioioioipiioffwfewfwioioioipiiof"));
-        chatMessages.add(new UserChatMessage("dddwdwdwddddwdwdwddddwdwdwddddwdwdwddddwdwdwddddwdwdwddddwdwdwddddwdwdwddddwdwdwd"));
-        */
     }
 
     public static MessagesAdapter getMessagesAdapter(Context context) {

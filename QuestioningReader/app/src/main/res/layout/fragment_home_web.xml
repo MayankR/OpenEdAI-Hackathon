@@ -1,47 +1,25 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.prakhar2_mayank.questioningreader.HomeWebFragment"
-    android:background="#ffffff">
+    android:id="@+id/themesFrag" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true">
-            <EditText
-                android:id="@+id/web_search_query"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:inputType="text"
-                android:imeOptions="actionSearch"
-                android:hint="What do you want to learn?"/>
-            <Button
-                android:id="@+id/web_search_button"
-                android:layout_marginTop="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="GO!"
-                android:background="#dedede"
-                android:layout_gravity="center"/>
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/web"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="-50dp"
-            android:layout_marginBottom="-90dp"/>
+        <!-- You can customize this layout.
+         You need to have in your layout a `CardView` with the ID `list_cardId` -->
+        <it.gmariotti.cardslib.library.view.CardListView
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:id="@+id/flashcardsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:fadingEdge="none"
+            card:list_card_layout_resourceID="@layout/card_layout_new"
+            style="@style/list_card.thumbnail"/>
 
     </RelativeLayout>
-
 </FrameLayout>

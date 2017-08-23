@@ -1,6 +1,10 @@
 package com.prakhar2_mayank.questioningreader;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -25,13 +29,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.DecelerateInterpolator;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -46,8 +51,11 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
+
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.view.CardView;
 
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -58,6 +66,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     NavigationView mNavigationView;
     final static int MY_PERMISSIONS_REQUEST_CAMERA = 23;
 //    ArrayList<Uri> uriList;
+
+
+    HashMap<Card, String> cardAnswerHashMap;
+
+    private Animator mCurrentAnimator;
+
+    // The system "short" animation time duration, in milliseconds. This
+    // duration is ideal for subtle animations or animations that occur
+    // very frequently.
+    private int mShortAnimationDuration;
+
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -85,6 +104,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setCurrentItem(1,false);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
@@ -110,6 +130,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     MY_PERMISSIONS_REQUEST_CAMERA);
         }
+
+        cardAnswerHashMap = new HashMap<>();
+
+        mShortAnimationDuration = getResources().getInteger(
+                android.R.integer.config_shortAnimTime);
     }
 
     @Override
@@ -282,6 +307,107 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         }
     }
+
+
+    private void rotateCard(final View thumbView, final CardView expandedImageView) {
+        // If there's an animation in progress, cancel it
+        // immediately and proceed with this one.
+        // TODO: BAD HACK NEED TO REMOVE
+        while (mCurrentAnimator != null) {
+            return;
+        }
+
+        AnimatorSet set = new AnimatorSet();
+
+        thumbView.setAlpha(1);
+        expandedImageView.setRotationY(-180);
+        set.play(ObjectAnimator.ofFloat(thumbView, View.ROTATION_Y, 0, -180)).with(ObjectAnimator.ofFloat(thumbView, View.ALPHA, 1, 0)).with(ObjectAnimator.ofFloat(expandedImageView, View.ALPHA, 0, 1)).with(ObjectAnimator.ofFloat(expandedImageView, View.ROTATION_Y, -180, -360));
+
+        set.setDuration(mShortAnimationDuration);
+        set.setInterpolator(new DecelerateInterpolator());
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mCurrentAnimator = null;
+                thumbView.setVisibility(View.INVISIBLE);
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                mCurrentAnimator = null;
+                thumbView.setRotationY(-180);
+                thumbView.setAlpha(0);
+                thumbView.setVisibility(View.INVISIBLE);
+                expandedImageView.setRotationY(0);
+                expandedImageView.setAlpha(1);
+                expandedImageView.setVisibility(View.VISIBLE);
+            }
+        });
+        set.start();
+        mCurrentAnimator = set;
+
+    }
+
+    private void rotateCardRev(final View thumbView, final CardView expandedImageView) {
+        // If there's an animation in progress, cancel it
+        // immediately and proceed with this one.
+        // TODO: BAD HACK NEED TO REMOVE
+        if (mCurrentAnimator != null) {
+            return;
+        }
+
+        AnimatorSet set = new AnimatorSet();
+
+        expandedImageView.setRotationY(-180);
+        thumbView.setAlpha(1);
+        set.play(ObjectAnimator.ofFloat(thumbView, View.ROTATION_Y, 0, 180)).with(ObjectAnimator.ofFloat(thumbView, View.ALPHA, 1, 0)).with(ObjectAnimator.ofFloat(expandedImageView, View.ALPHA, 0, 1)).with(ObjectAnimator.ofFloat(expandedImageView, View.ROTATION_Y, -180, 0));
+
+        set.setDuration(mShortAnimationDuration);
+        set.setInterpolator(new DecelerateInterpolator());
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mCurrentAnimator = null;
+                thumbView.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                mCurrentAnimator = null;
+                thumbView.setRotationY(180);
+                thumbView.setAlpha(0);
+                thumbView.setVisibility(View.INVISIBLE);
+                expandedImageView.setRotationY(0);
+                expandedImageView.setAlpha(1);
+                expandedImageView.setVisibility(View.VISIBLE);
+            }
+        });
+        set.start();
+        mCurrentAnimator = set;
+
+    }
+
+    public void cardFlipper(View view) {
+        CardView cardView = (CardView) view.getParent().getParent().getParent().getParent().getParent();
+        CardView cardView1 = (CardView) ((FrameLayout) (cardView.getParent())).findViewById(R.id.list_cardId1);
+        cardView1.setVisibility(View.VISIBLE);
+        //cardView.setVisibility(View.INVISIBLE);
+        Card card = new Card(this);
+        card.setTitle(cardAnswerHashMap.get(cardView.getCard()));
+        cardView1.setCard(card);
+        rotateCard(cardView, cardView1);
+//        cardView.setVisibility(View.INVISIBLE);
+    }
+    public void undoCardFlipper(View view) {
+        CardView cardView = (CardView) view.getParent().getParent().getParent().getParent().getParent();
+        CardView cardView1 = (CardView) ((FrameLayout) (cardView.getParent())).findViewById(R.id.list_cardId);
+        cardView1.setVisibility(View.VISIBLE);
+        //cardView.setVisibility(View.INVISIBLE);
+        rotateCardRev(cardView, cardView1);
+//        cardView.setVisibility(View.INVISIBLE);
+    }
+
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
