@@ -4,8 +4,7 @@
     android:layout_height="wrap_content"
     android:paddingBottom="13dp"
     android:paddingTop="13dp"
-    android:background="@color/white"
-    android:foreground="@color/transparent_light">
+    android:background="@color/transparent_light">
 
     <ImageView
         android:id="@+id/file_icon"
