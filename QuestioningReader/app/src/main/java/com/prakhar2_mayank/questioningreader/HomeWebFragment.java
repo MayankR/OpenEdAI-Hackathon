@@ -71,6 +71,10 @@ public class HomeWebFragment extends Fragment implements View.OnClickListener {
         if (getArguments() != null) {
 
         }
+
+        mCardsList = new ArrayList<>();
+        mCardAdapter = new CardArrayAdapter(getActivity(), mCardsList);
+
     }
 
     @Override
@@ -84,17 +88,25 @@ public class HomeWebFragment extends Fragment implements View.OnClickListener {
 
         //populate cards
         mFlashCardsList = (CardListView) v.findViewById(R.id.flashcardsList);
-        dbCardsList = getAllFlashCards();
-        mCardsList = new ArrayList<>();
-        for (int i = 0; i < dbCardsList.size(); i++) {
-            Card card = new Card(getActivity());
-            cardAnswerHashMap.put(card, dbCardsList.get(i).getAnswer());
-            card.setTitle(dbCardsList.get(i).getTitle()+'\n' + dbCardsList.get(i).getContent());
-            mCardsList.add(card);
-        }
-        mCardAdapter = new CardArrayAdapter(getActivity(), mCardsList);
-        mCardAdapter.setEnableUndo(true);
         mFlashCardsList.setAdapter(mCardAdapter);
+
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mCardsList = new ArrayList<>();
+                mCardAdapter = new CardArrayAdapter(getActivity(), mCardsList);
+                dbCardsList = getAllFlashCards();
+                for (int i = 0; i < dbCardsList.size(); i++) {
+                    Card card = new Card(getActivity());
+                    cardAnswerHashMap.put(card, dbCardsList.get(i).getAnswer());
+                    card.setTitle(dbCardsList.get(i).getTitle()+'\n' + dbCardsList.get(i).getContent());
+                    mCardsList.add(card);
+                }
+                mCardAdapter = new CardArrayAdapter(getActivity(), mCardsList);
+                mCardAdapter.setEnableUndo(true);
+                mFlashCardsList.setAdapter(mCardAdapter);
+            }
+        })).start();
 
         return v;
     }

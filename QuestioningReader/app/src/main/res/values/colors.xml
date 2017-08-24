@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <color name="colorPrimary">#508500</color>
+    <color name="colorPrimaryDark">#F03500</color>
+    <!--<color name="colorPrimaryDark">#303F9F</color>-->
+    <!--<color name="colorAccent">#FF4081</color>-->
+    <color name="colorAccent">#F03500</color>
 
 
 
     <!-- Inside colors.xml -->
 
-    <color name="action_bar_color">#0277bd</color>
+    <!--<color name="action_bar_color">#0277bd</color>-->
+    <color name="action_bar_color">#337700</color>
     <color name="action_bar_text_color">#fafafa</color>
     <color name="drawer_background">#fafafa</color>
     <color name="drawer_selected">#ff9100</color>
@@ -20,4 +24,8 @@
     <color name="chat_blue">#c5d640de</color>
     <color name="transparent">#00000000</color>
     <color name="green">#FF27AE60</color>
+    <color name="light_green">#FF5ADF93</color>
+    <color name="red">#ff5050</color>
+    <color name="transparent_light">#330277bd</color>
+    <color name="transparent_light_front">#335ADF93</color>
 </resources>

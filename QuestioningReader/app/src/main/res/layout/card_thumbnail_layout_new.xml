@@ -85,15 +85,14 @@
                         android:id="@+id/card_main_content_layout"
                         style="@style/card.content_outer_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/white"/>
+                        android:layout_height="wrap_content"/>
                 </LinearLayout>
 
                 <ImageView
                         android:id="@+id/transparent_layer_card"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/transparent"
+                        android:background="@color/transparent_light_front"
                         android:onClick="cardFlipper"/>
             </FrameLayout>
         </LinearLayout>

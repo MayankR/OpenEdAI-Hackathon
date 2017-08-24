@@ -55,6 +55,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.view.CardView;
 
 
@@ -66,7 +67,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     NavigationView mNavigationView;
     final static int MY_PERMISSIONS_REQUEST_CAMERA = 23;
 //    ArrayList<Uri> uriList;
-
 
     HashMap<Card, String> cardAnswerHashMap;
 
@@ -86,6 +86,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        cardAnswerHashMap = new HashMap<>();
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -131,10 +133,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     MY_PERMISSIONS_REQUEST_CAMERA);
         }
 
-        cardAnswerHashMap = new HashMap<>();
-
         mShortAnimationDuration = getResources().getInteger(
                 android.R.integer.config_shortAnimTime);
+
+        this.getSupportActionBar().hide();
     }
 
     @Override
@@ -369,7 +371,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onAnimationEnd(Animator animation) {
                 mCurrentAnimator = null;
-                thumbView.setVisibility(View.INVISIBLE);
+                thumbView.setVisibility(View.GONE);
             }
 
             @Override
@@ -393,9 +395,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         CardView cardView1 = (CardView) ((FrameLayout) (cardView.getParent())).findViewById(R.id.list_cardId1);
         cardView1.setVisibility(View.VISIBLE);
         //cardView.setVisibility(View.INVISIBLE);
-        Card card = new Card(this);
-        card.setTitle(cardAnswerHashMap.get(cardView.getCard()));
-        cardView1.setCard(card);
+        if (cardView1.getCard() == null) {
+            Card card = new Card(this);
+            card.setTitle("\n\n"+cardAnswerHashMap.get(cardView.getCard()));
+            cardView1.setCard(card);
+        }
+        cardView1.findViewById(R.id.color_strip).setBackgroundResource(R.color.red);
         rotateCard(cardView, cardView1);
 //        cardView.setVisibility(View.INVISIBLE);
     }
@@ -443,9 +448,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "WEB";
+                    return "REVISE";
                 case 1:
-                    return "FILE";
+                    return "READ";
                 case 2:
                     return "SCAN";
             }
