@@ -86,8 +86,22 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
 
         resetChatBot();
 
+        content = "<style type=\"text/css\">\n" +
+                "@font-face {\n" +
+                "    font-family: MyFont;\n" +
+                "    src: url(\"file:///android_asset/fonts/cmunrm.otf\")\n" +
+                "}\n" +
+                "body {\n" +
+                "    font-family: MyFont;\n" +
+                "    font-size: medium;\n" +
+                "    text-align: justify;\n" +
+                "}\n" +
+                "</style>"
+                + content;
+
         contentWV = (WebView) findViewById(R.id.document_content);
-        contentWV.loadData(content, "text/html; charset=utf-8", "utf-8");
+        //contentWV.loadData(content, "text/html; charset=utf-8", "utf-8");
+        contentWV.loadDataWithBaseURL("file:///android_asset/", content, "text/html; charset=utf-8", "utf-8", "");
 
         contentSV = (ScrollView) findViewById(R.id.content_scroll);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

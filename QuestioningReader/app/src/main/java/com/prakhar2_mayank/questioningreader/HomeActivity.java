@@ -216,7 +216,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
             else {
                 content = FileReader.readTextFromUri(this, uri);
-                content = "<div style='text-align: justify; font-family: Verdana, Geneva, sans-serif; margin-top: 30px; margin-bottom: 200px; word-wrap: break-word; margin-right: 10px; margin-left: 10px;'>" + content + "</div>";
+                content = "<div style='text-align: justify; margin-top: 30px; margin-bottom: 200px; word-wrap: break-word; margin-right: 10px; margin-left: 10px;'>" + content + "</div>";
                 loadReaderActivity(content);
             }
 

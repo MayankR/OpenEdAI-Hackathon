@@ -62,7 +62,8 @@
             android:id="@+id/past_files_list"
             android:layout_below="@+id/separator"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/chat_background_orig">
 
         </ListView>
         </LinearLayout>

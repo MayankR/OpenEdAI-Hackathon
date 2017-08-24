@@ -5,12 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/themesFrag"
-    android:background="@color/light_green">
+    android:background="@drawable/chat_background_orig">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/light_green">
+        android:layout_height="match_parent">
         <!-- You can customize this layout.
          You need to have in your layout a `CardView` with the ID `list_cardId` -->
         <it.gmariotti.cardslib.library.view.CardListView
@@ -21,8 +20,7 @@
             android:clipToPadding="false"
             android:fadingEdge="none"
             card:list_card_layout_resourceID="@layout/card_layout_new"
-            style="@style/list_card.thumbnail"
-            android:background="@color/light_green"/>
+            style="@style/list_card.thumbnail"/>
 
     </RelativeLayout>
 </FrameLayout>
