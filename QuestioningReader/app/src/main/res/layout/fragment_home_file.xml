@@ -95,8 +95,7 @@
             android:src="@drawable/fileicon_white"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_margin="25dp"
-            android:visibility="gone"/>
+            android:layout_margin="25dp"/>
 
     </RelativeLayout>
 
