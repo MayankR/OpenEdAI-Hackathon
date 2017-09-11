@@ -66,7 +66,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
     final static int MY_PERMISSIONS_REQUEST_CAMERA = 23;
-//    ArrayList<Uri> uriList;
 
     HashMap<Card, String> cardAnswerHashMap;
 
@@ -165,14 +164,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_home, menu);
-//        return true;
-//    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -190,6 +181,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     void processFile(Uri uri) {
         try {
+            // Get the file type
             ContentResolver cR = getContentResolver();
             MimeTypeMap mime = MimeTypeMap.getSingleton();
             String type = mime.getExtensionFromMimeType(cR.getType(uri));
@@ -202,7 +194,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             myPrefsEdit.remove("recent_files");
             myPrefsEdit.putStringSet("recent_files", recentFileSetCopy);
             myPrefsEdit.commit();
-            //Toast.makeText(this, "Added to recent file list", Toast.LENGTH_SHORT).show();
 
             String content = "error loading file...";
             if(type.equals("pdf")) {
@@ -408,9 +399,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         CardView cardView = (CardView) view.getParent().getParent().getParent().getParent().getParent();
         CardView cardView1 = (CardView) ((FrameLayout) (cardView.getParent())).findViewById(R.id.list_cardId);
         cardView1.setVisibility(View.VISIBLE);
-        //cardView.setVisibility(View.INVISIBLE);
         rotateCardRev(cardView, cardView1);
-//        cardView.setVisibility(View.INVISIBLE);
     }
 
 

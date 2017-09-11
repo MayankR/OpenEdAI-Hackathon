@@ -27,9 +27,11 @@ public class RecentFilesAdapter extends BaseAdapter {
         uriList = new ArrayList<String>();
     }
 
+    /**
+     * Number of recent files.
+     */
     @Override
     public int getCount() {
-//        return 6;
         return uriList.size();
     }
 
@@ -43,8 +45,11 @@ public class RecentFilesAdapter extends BaseAdapter {
         return position;
     }
 
+    /**
+     * Update the adapter's dataset
+     * @param uriList New list of recent files
+     */
     public void updateData(ArrayList<String> uriList) {
-        // update the adapter's dataset
         this.uriList = uriList;
         Log.d("RecentFilesAdapter", "file count: " + this.uriList.size());
         notifyDataSetChanged();
@@ -75,6 +80,7 @@ public class RecentFilesAdapter extends BaseAdapter {
         String fileUri = (String) getItem(position);
 
 
+        // Set correct icon for pdf file
         if(fileUri.endsWith("pdf")) {
             holder.fileIcon.setImageResource(R.drawable.pdf);
         }

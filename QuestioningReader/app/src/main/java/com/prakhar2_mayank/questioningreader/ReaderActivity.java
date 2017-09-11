@@ -73,6 +73,8 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Make app full screen
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -86,6 +88,8 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
 
         resetChatBot();
 
+        // Some html formatting to have text in a good font
+        // and set alignment to justified.
         content = "<style type=\"text/css\">\n" +
                 "@font-face {\n" +
                 "    font-family: MyFont;\n" +
@@ -100,7 +104,7 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
                 + content;
 
         contentWV = (WebView) findViewById(R.id.document_content);
-        //contentWV.loadData(content, "text/html; charset=utf-8", "utf-8");
+
         contentWV.loadDataWithBaseURL("file:///android_asset/", content, "text/html; charset=utf-8", "utf-8", "");
 
         contentSV = (ScrollView) findViewById(R.id.content_scroll);
@@ -164,7 +168,7 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
 
     public static void resetChatBot() {
         if (ReaderActivity.currObject == null){
-            return; //ReaderActivity.currObject = new ReaderActivity();
+            return;
         }
         ReaderActivity.chatBot = new ChatBot(ReaderActivity.currObject);
     }
@@ -200,7 +204,6 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
 
     void getQuestions(String text) {
         RequestParams params = new RequestParams();
-//        params.add("text", text);
 
         String url = Utility.QUESTION_URL + "error";
         try {
