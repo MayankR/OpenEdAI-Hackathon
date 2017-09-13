@@ -197,7 +197,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             String content = "error loading file...";
             if(type.equals("pdf")) {
-                //Toast.makeText(this, "Opened PDF", Toast.LENGTH_SHORT).show();
+
                 InputStream iStream = getContentResolver().openInputStream(uri);
                 Log.d(TAG, "getting bytes");
                 byte[] inputData = getBytes(iStream);
@@ -385,7 +385,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         CardView cardView = (CardView) view.getParent().getParent().getParent().getParent().getParent();
         CardView cardView1 = (CardView) ((FrameLayout) (cardView.getParent())).findViewById(R.id.list_cardId1);
         cardView1.setVisibility(View.VISIBLE);
-        //cardView.setVisibility(View.INVISIBLE);
+
         if (cardView1.getCard() == null) {
             Card card = new Card(this);
             card.setTitle("\n\n"+cardAnswerHashMap.get(cardView.getCard()));
@@ -393,7 +393,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
         cardView1.findViewById(R.id.color_strip).setBackgroundResource(R.color.red);
         rotateCard(cardView, cardView1);
-//        cardView.setVisibility(View.INVISIBLE);
+
     }
     public void undoCardFlipper(View view) {
         CardView cardView = (CardView) view.getParent().getParent().getParent().getParent().getParent();

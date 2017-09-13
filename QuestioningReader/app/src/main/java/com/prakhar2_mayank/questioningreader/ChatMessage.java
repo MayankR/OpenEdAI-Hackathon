@@ -2,6 +2,7 @@ package com.prakhar2_mayank.questioningreader;
 
 /**
  * Created by user on 30/7/17.
+ * Wrapper class for message.
  */
 public class ChatMessage {
     private String message;

@@ -213,19 +213,15 @@ public class FlashCardsActivity extends AppCompatActivity {
         CardView cardView = (CardView) view.getParent().getParent().getParent().getParent().getParent();
         CardView cardView1 = (CardView) ((FrameLayout) (cardView.getParent())).findViewById(R.id.list_cardId1);
         cardView1.setVisibility(View.VISIBLE);
-        //cardView.setVisibility(View.INVISIBLE);
         Card card = new Card(this);
         card.setTitle(cardAnswerHashMap.get(cardView.getCard()));
         cardView1.setCard(card);
         zoomImageFromThumb(cardView, cardView1);
-//        cardView.setVisibility(View.INVISIBLE);
     }
     public void undoCardFlipper(View view) {
         CardView cardView = (CardView) view.getParent().getParent().getParent().getParent().getParent();
         CardView cardView1 = (CardView) ((FrameLayout) (cardView.getParent())).findViewById(R.id.list_cardId);
         cardView1.setVisibility(View.VISIBLE);
-        //cardView.setVisibility(View.INVISIBLE);
         zoomImageFromThumbRev(cardView, cardView1);
-//        cardView.setVisibility(View.INVISIBLE);
     }
 }

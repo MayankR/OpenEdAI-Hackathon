@@ -2,6 +2,7 @@ package com.prakhar2_mayank.questioningreader;
 
 /**
  * Created by user on 30/7/17.
+ * Wrapper class for the message produced by the bot.
  */
 public class BotChatMessage extends ChatMessage {
 

@@ -18,23 +18,26 @@ public class ConceptListAdapter extends BaseAdapter {
 
     Context mContext;
     LayoutInflater mInflater;
-    ArrayList<String> uriList;
+    ArrayList<String> conceptList;
 
     public ConceptListAdapter(Context context, LayoutInflater inflater) {
         mContext = context;
         mInflater = inflater;
-        uriList = new ArrayList<String>();
+        conceptList = new ArrayList<String>();
     }
 
+    /**
+     * Number of concepts
+     * @return Number of concepts
+     */
     @Override
     public int getCount() {
-//        return 6;
-        return uriList.size();
+        return conceptList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return uriList.get(position);
+        return conceptList.get(position);
     }
 
     @Override
@@ -42,10 +45,14 @@ public class ConceptListAdapter extends BaseAdapter {
         return position;
     }
 
+    /**
+     * Use the new list of concepts
+     * @param uriList List of string of concepts
+     */
     public void updateData(ArrayList<String> uriList) {
         // update the adapter's dataset
-        this.uriList = uriList;
-        Log.d("RecentFilesAdapter", "file count: " + this.uriList.size());
+        this.conceptList = uriList;
+        Log.d("RecentFilesAdapter", "file count: " + this.conceptList.size());
         notifyDataSetChanged();
     }
 
@@ -71,6 +78,7 @@ public class ConceptListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        //Set the current concept in this row.
         String fileUri = (String) getItem(position);
 
         holder.conceptName.setText(fileUri);
@@ -79,6 +87,9 @@ public class ConceptListAdapter extends BaseAdapter {
         return convertView;
     }
 
+    /**
+     * Holder for the row view
+     */
     private static class ViewHolder {
         public TextView conceptName;
         public TextView conceptIndex;

@@ -48,7 +48,7 @@ public class FlashCardItem {
         this.answer = answer;
     }
 
-    private int color; // Optionally you might want separate cards by color.
+    private int color;
     private String content, answer;
 
 }
