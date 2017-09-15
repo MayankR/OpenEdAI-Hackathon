@@ -49,7 +49,7 @@ Detailed description of api along with request and response format is available 
 
 We are a set of four undergraduates pursuing Computer Science at IIT Delhi.
 *  <a href="http://www.cse.iitd.ac.in/~cs1140290/">Prakhar Gupta</a>
-*  <a href="www.mayankrajoria.com">Mayank Rajoria</a>
+*  <a href="http://www.mayankrajoria.com">Mayank Rajoria</a>
 *  <a href="http://harsharya.me">Harsh Arya</a>
-*  <a href="www.cse.iitd.ac.in/~cs1140207">Prakhar Agrawal</a>
+*  <a href="http://www.cse.iitd.ac.in/~cs1140207">Prakhar Agrawal</a>
 
