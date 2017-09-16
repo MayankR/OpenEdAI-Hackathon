@@ -10,12 +10,7 @@ var request = require('request');
 var util = require('util');
 var watsonAPI = require('../watson').watsonApi
 
-function decodebase64File(){
-
-}
-
-
-
+// Function returns text if isConcept=false and returns concepts otherwise
 exports.convertocrtotext = function (base64image, options,isConcept,callback) {
 
 
@@ -25,7 +20,7 @@ exports.convertocrtotext = function (base64image, options,isConcept,callback) {
                 isOverlayRequired: options.isOverlayRequired ? options.isOverlayRequired : false
             };
 
-          //  formOptions.Base64Image = util.format(_base64ImagePattern, (options.imageFormat) ? options.imageFormat : _defaultImageType, base64image);
+           
              formOptions.Base64Image = base64image
              uri = {
                 method: 'post',
@@ -35,7 +30,6 @@ exports.convertocrtotext = function (base64image, options,isConcept,callback) {
                     "content-type": "application/json",
                 },
                 json: true,
-                 proxy:'http://proxy22.iitd.ac.in:3128'
             };
 
             request(uri, function (error, response, ocrParsedResult) {
@@ -52,10 +46,6 @@ exports.convertocrtotext = function (base64image, options,isConcept,callback) {
                         parsedResults.forEach(function(value) {
                             var exitCode = value["FileParseExitCode"];
                             var parsedText = value["ParsedText"];
-                            //var errorMessage = responseBody["ParsedTextFileName"];
-                            //var errorDetails = responseBody["ErrorDetails"];
-
-                            //var textOverlay = responseBody["TextOverlay"];
 
                             switch (+exitCode) {
                                 case 1:
@@ -73,11 +63,11 @@ exports.convertocrtotext = function (base64image, options,isConcept,callback) {
 
                         }, this);
 
-                        // Monta o objeto com os resultados
                          result = {
                             parsedText: pageText,
                             ocrParsedResult: ocrParsedResult
                         }
+						// Call watson API
                         if(isConcept)
                             watsonAPI.getConcepts(result.parsedText,callback);
                          else callback(result.parsedText)

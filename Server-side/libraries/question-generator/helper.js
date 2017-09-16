@@ -1,7 +1,7 @@
 /**
  * Created by Harsh on 01-08-2017.
  */
-
+// Calls intelliq server for question generation 
 var request = require('request');
 exports.getQuestion = function (text,callback){
     var options = {
