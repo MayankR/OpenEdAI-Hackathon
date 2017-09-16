@@ -6,6 +6,7 @@ var questionHelper = require('./question-generator')
 var watsonAPI = require('./watson').watsonApi
 var config = require('./config/private')
 module.exports = function(app){
+	
     app.all('/search/keyword',function(req,res){
         var query = req.query.query
         var accept = function(answer){
@@ -68,7 +69,7 @@ module.exports = function(app){
         var extImage = req.body.name
         console.log(extImage)
         options =     {
-            apikey: '6dff6a8e3388957',
+            apikey: config.ocrapi,
             language: 'eng',
             isOverlayRequired: true,
             url: 'https://api.ocr.space/parse/image'  ,
