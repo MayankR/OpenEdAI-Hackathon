@@ -4,7 +4,7 @@
 var wikipedia = require("wikipedia-js");
 
 
-
+// Search wikipedia for the given text
 exports.getWikiText = function getWikiText(query,callback) {
     var options = {query: query, format: "html", summaryOnly: false, lang: "en"};
 

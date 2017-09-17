@@ -10,12 +10,11 @@ var NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-lan
 
 var nlu = new NaturalLanguageUnderstandingV1(config.nlu);
 
+
 function convertPDFtoHTML(file_to_upload,callback) {
     document_conversion.convert({
-        // (JSON) ANSWER_UNITS, NORMALIZED_HTML, or NORMALIZED_TEXT
         file: file_to_upload,
         conversion_target: document_conversion.conversion_target.NORMALIZED_HTML,
-        // Add custom configuration properties or omit for defaults
 
     }, function (err, response) {
         if (err) {
