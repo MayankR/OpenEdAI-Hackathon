@@ -2,6 +2,7 @@ package com.prakhar2_mayank.questioningreader;
 
 /**
  * Created by prakhar0409 on 01/08/17.
+ * Wrapper class for each flash card item
  */
 public class FlashCardItem {
 

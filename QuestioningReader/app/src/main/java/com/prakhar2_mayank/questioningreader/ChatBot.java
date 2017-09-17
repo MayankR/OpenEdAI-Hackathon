@@ -23,7 +23,10 @@ import java.util.Set;
 
 public class ChatBot {
 
+    // A set of answers for the question
     private Set<String> nextAns;
+
+    // A queue to store the questions for chatbot
     private Queue<JSONObject> questionQueue;
     private MessagesAdapter messagesAdapter;
     private AppCompatActivity parentActivity;
@@ -32,16 +35,12 @@ public class ChatBot {
     boolean newQues;
 
     ChatBot(final AppCompatActivity parentActivity) {
+        // Initialize the data structures and the UI
 
         this.parentActivity = parentActivity;
         nextAns = null;
 
         questionQueue = new ArrayDeque<>(10000);
-//        try {
-//            addQuestionsToQueue(new JSONObject("{\"api\":\"get Question\",\"message\":\"successful\",\"text\":[{\"answer\":\"speculation\",\"question\":\"After all the __________ about whether we would have the fight, the last few weeks have seen much name-calling and animosity on both sides, as the rivalry intensifies ahead of the big day.\",\"similar_words\":[\"adverse opinion\",\"guess\",\"side\"],\"title\":\"mytopic\"}]}"));
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
 
         messageListView = ((ListView) parentActivity.findViewById(R.id.message_list));
         messagesAdapter = MessagesAdapter.getMessagesAdapter(parentActivity);
@@ -89,8 +88,12 @@ public class ChatBot {
                 addBotMessage(questionQueue.remove());
             }
         } else if (nextAns.contains(userAnswer)) {
+            //This is the case that the user answers correctly
+
             MessagesAdapter.addChatMessage((new BotChatMessage("Correct")).setTyping(false));
 
+            // Insert this new question into the local
+            // SQLite database.
             if(newQues) {
                 DbHelper dbHelper = new DbHelper(parentActivity);
 
@@ -107,16 +110,20 @@ public class ChatBot {
                 newQues = false;
             }
 
+            // Inform user of no more questions
             if (questionQueue.isEmpty()) {
                 addDelayedChatBotMessage(new BotChatMessage("Sorry, No More Questions For Now"), 1000);
             } else {
                 addBotMessage(questionQueue.remove());
             }
         } else {
+            //User gave a wrong answer to teh question
+
             MessagesAdapter.addChatMessage((new BotChatMessage("Wrong Answer")).setTyping(false));
             MessagesAdapter.addChatMessage((new BotChatMessage("Try Again")).setTyping(false));
             scrollMyListViewToBottom();
 
+            //If this was a new question, add to flashcard database
             if(newQues) {
                 DbHelper dbHelper = new DbHelper(parentActivity);
 
@@ -135,6 +142,8 @@ public class ChatBot {
         }
     }
 
+    // Parse the server's response JSON and add the questions to a
+    // queue.
     public int addQuestionsToQueue(JSONObject responseFromQuestionApi) {
         int numQues = 0;
         try {
@@ -174,6 +183,8 @@ public class ChatBot {
         }
     }
 
+    // Show a typing gif and then present the chat bot's message
+    // to the user to make it look realistic :p
     private void addDelayedChatBotMessage(final BotChatMessage botChatMessage, final long delay) {
         scrollMyListViewToBottom();
         MessagesAdapter.addChatMessage(botChatMessage);

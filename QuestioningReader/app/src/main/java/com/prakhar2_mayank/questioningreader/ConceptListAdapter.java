@@ -20,6 +20,10 @@ public class ConceptListAdapter extends BaseAdapter {
     LayoutInflater mInflater;
     ArrayList<String> conceptList;
 
+    /**
+     * Constructor for setting the context and other objects used for
+     * rendering the UI.
+     */
     public ConceptListAdapter(Context context, LayoutInflater inflater) {
         mContext = context;
         mInflater = inflater;
