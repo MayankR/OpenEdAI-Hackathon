@@ -151,7 +151,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 //                Toast.makeText(this, "Load report activity", Toast.LENGTH_SHORT).show();
 //                break;
             case R.id.nav_item_home:
-                //Toast.makeText(this, "Load home activity", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Load home activity", Toast.LENGTH_SHORT).show();
                 break;
         }
         return false;
@@ -217,6 +217,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /**
+     * Start the reader activity to allow the suer to read the document
+     * @param content The content of the document as a string
+     */
     void loadReaderActivity(String content) {
         Intent it = new Intent(this, ReaderActivity.class);
         it.putExtra(Utility.DOCUMENT_CONTENT_MESSAGE, content);
@@ -225,14 +229,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         ReaderActivity.resetChatBot();
     }
 
+    /**
+     * Upload base64 of the PDF to the server to get it as a string to allow
+     * its easy rendering using a WebView
+     * @param fileB64 base64 string of the PDF
+     */
     void uploadPDF(String fileB64) {
         RequestParams params = new RequestParams();
         params.add("file", fileB64);
         params.add("name", "pdf");
 
         Log.d(TAG, "B64 file: " + fileB64 + " :done");
-        Log.d(TAG, "B64 file length: " + fileB64.length());
-        Log.d(TAG, "Params: " + params);
 
         String url = Utility.CONVERT_PDF_URL;
 
@@ -283,6 +290,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return byteBuffer.toByteArray();
     }
 
+    /**
+     * Activity result for picking up a file.
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode,
                                  Intent resultData) {
@@ -433,6 +443,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             return 3;
         }
 
+        /**
+         * Returns titles of the tabs of home screen
+         */
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {

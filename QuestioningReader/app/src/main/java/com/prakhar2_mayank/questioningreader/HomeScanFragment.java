@@ -86,11 +86,7 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener, 
         previewFL = (FrameLayout) v.findViewById(R.id.camera_preview);
         setUpCamera();
 
-//        scanConceptLV = (ListView) v.findViewById(R.id.scan_concept_list);
-//        conceptAdapter = new ConceptListAdapter(getContext(), getActivity().getLayoutInflater());
-//        scanConceptLV.setAdapter(conceptAdapter);
-//        scanConceptLV.setOnItemClickListener(this);
-
+        // Set up the UI components
         dialogView = inflater.inflate(R.layout.concept_alert, null);
         scanConceptLV = (ListView) dialogView.findViewById(R.id.scan_concept_list);
         conceptAdapter = new ConceptListAdapter(getContext(), getActivity().getLayoutInflater());
@@ -106,16 +102,9 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener, 
     }
 
     void showRL() {
-//        scanConceptRL.setVisibility(View.VISIBLE);
-//        scanConceptRL.setAlpha(0.0f);
-//
-//        scanConceptRL.animate()
-//                .translationY(-0.1f * scanConceptRL.getHeight())
-//                .alpha(1.0f)
-//                .setListener(null);
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
-// ...Irrelevant code for customizing the buttons and title
+//      ...Irrelevant code for customizing the buttons and title
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         if(dialogView.getParent() != null) {
@@ -124,8 +113,6 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener, 
         }
         dialogBuilder.setView(dialogView);
 
-//        EditText editText = (EditText) dialogView.findViewById(R.id.label_field);
-//        editText.setText("test label");
         AlertDialog alertDialog = dialogBuilder
                 .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
@@ -138,17 +125,6 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener, 
     }
 
     void hideRL() {
-//        scanConceptRL.setVisibility(View.VISIBLE);
-//        scanConceptRL.animate()
-//                .translationY(-300)
-//                .alpha(0.0f)
-//                .setListener(new AnimatorListenerAdapter() {
-//                    @Override
-//                    public void onAnimationEnd(Animator animation) {
-//                        super.onAnimationEnd(animation);
-//                        scanConceptRL.setVisibility(View.GONE);
-//                    }
-//                });
         scanConceptRL.setVisibility(View.GONE);
 
     }
@@ -163,6 +139,10 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
+    /**
+     * Load the list of concepts after parsing server's response
+     * @param obj Server's response
+     */
     void loadConceptList(JSONObject obj) {
         try {
             Log.d(TAG, "Parsing concepts");
@@ -173,7 +153,6 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener, 
             }
             conceptAdapter.updateData(conceptNameString);
             Log.d(TAG, "Loading RL");
-//            scanConceptRL.setVisibility(View.VISIBLE);
             showRL();
         }
         catch (JSONException e) {
@@ -181,6 +160,9 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
+    /**
+     * Call back when a picture is clicked
+     */
     private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
 
         @Override
@@ -218,7 +200,6 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener, 
             byte[] b = baos.toByteArray();
 
             String userImgB64 = Base64.encodeToString(b, Base64.DEFAULT);
-//            userImgB64 = userImgB64.substring(5);
             userImgB64 = "data:image/jpeg;base64," + userImgB64.trim().replaceAll("[\n\r]", "");
             sendImage(userImgB64);
 
@@ -232,13 +213,16 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener, 
         }
     };
 
+    /**
+     * Send base64 of the string to the server to get concepts present
+     * in the text in the image
+     */
     void sendImage(String fileB64) {
         RequestParams params = new RequestParams();
         params.add("file", fileB64);
         params.add("name", "jpeg");
 
         Log.d(TAG, "B64 file: " + fileB64.substring(fileB64.length() - 20) + " :done");
-        Log.d(TAG, "B64 file length: " + fileB64.length());
         Log.d(TAG, "Params: " + params);
 
         String url = Utility.OCR_URL;
@@ -279,6 +263,9 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener, 
         });
     }
 
+    /**
+     * Set up the camera to click pics
+     */
     void setUpCamera() {
         Thread thread = new Thread() {
             @Override
@@ -335,6 +322,9 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener, 
         return c; // returns null if camera is unavailable
     }
 
+    /**
+     * Load the reader activity so that the user can read the content
+     */
     void showReader(String content) {
         Intent it = new Intent(getActivity(), ReaderActivity.class);
         it.putExtra(Utility.DOCUMENT_CONTENT_MESSAGE, content);
@@ -343,6 +333,10 @@ public class HomeScanFragment extends Fragment implements View.OnClickListener, 
         ReaderActivity.resetChatBot();
     }
 
+    /**
+     * Get article for the requested concept in the image
+     * @param q Concept name
+     */
     void getArticle(String q) {
         RequestParams params = new RequestParams();
 

@@ -166,6 +166,9 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
         });
     }
 
+    /**
+     * Reset the conversation in chat bot
+     */
     public static void resetChatBot() {
         if (ReaderActivity.currObject == null){
             return;
@@ -196,12 +199,20 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
         fabBadge.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Enable the question mode. Now questions will be prepared on any content
+     * read by the user.
+     */
     void startReading() {
         Log.d(TAG, "Start Reading in qMode!");
         startScroll = curScroll;
         qMode = true;
     }
 
+    /**
+     * Get questions from the given text form the server.
+     * @param text The text from which questions are to be generated
+     */
     void getQuestions(String text) {
         RequestParams params = new RequestParams();
 
@@ -228,7 +239,6 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, String errorResponse) {
-//                loading.dismiss();
                 if (statusCode == 404) {
                     Toast.makeText(getApplication(), "404 - Not Found", Toast.LENGTH_LONG).show();
                 } else if (statusCode == 500) {
@@ -266,6 +276,11 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * This function maintains an approximate location the user might be present
+     * at right now and what text he has read from the last time questions
+     * were requested from the server.
+     */
     @Override
     public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
         Log.d(TAG, "scrollx: " + scrollX + " oldscrollx: " + oldScrollX);
@@ -279,9 +294,9 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
             Log.d(TAG, "Content length: " + totalContentLength);
 
             double startPct = (double) startScroll / (double) totalHeight;
-            startPct += 0.0005;
+            startPct += 0.0005; // A safety measure
             double endPct = (double) curScroll / (double) totalHeight;
-            endPct -= 0.0005;
+            endPct -= 0.0005; // A safety measure
 
             Log.d(TAG, "start: " + startPct + "end: " + endPct);
             if(startPct >= 1) startPct = 0.96;
@@ -292,6 +307,9 @@ public class ReaderActivity extends AppCompatActivity implements View.OnScrollCh
 
             contentRead = Html.fromHtml(contentRead).toString();
             Log.d(TAG, "Content Read: " + contentRead);
+
+            // If user has read enough content, request questions from
+            // the server.
             if(contentRead.length() > 1000) {
                 getQuestions(contentRead);
                 startScroll = curScroll;

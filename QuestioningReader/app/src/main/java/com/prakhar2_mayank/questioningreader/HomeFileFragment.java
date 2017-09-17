@@ -84,8 +84,7 @@ public class HomeFileFragment extends Fragment implements View.OnClickListener, 
             }
         });
 
-
-
+        // Prepare the UI
         selectFileButton = (FloatingActionButton) v.findViewById(R.id.select_file);
         selectFileButton.setOnClickListener(this);
 
@@ -95,6 +94,7 @@ public class HomeFileFragment extends Fragment implements View.OnClickListener, 
         recentFilesLV = (ListView) v.findViewById(R.id.past_files_list);
         fileAdapter = new RecentFilesAdapter(getActivity(), getActivity().getLayoutInflater());
 
+        // Load and display the recently opened files
         SharedPreferences myPrefs = getActivity().getSharedPreferences("HollaMan", 0);
         Set<String> recentFileSet = myPrefs.getStringSet("recent_files", new ArraySet<String>());
         ArrayList<String> recentFileList = new ArrayList<String>(recentFileSet);
@@ -104,11 +104,13 @@ public class HomeFileFragment extends Fragment implements View.OnClickListener, 
         recentFilesLV.setAdapter(fileAdapter);
         recentFilesLV.setOnItemClickListener(this);
 
-
-
         return v;
     }
 
+    /**
+     * On resume, load the list of recent files and display it in the list
+     * for easy access.
+     */
     @Override
     public void onResume() {
         SharedPreferences myPrefs = getActivity().getSharedPreferences("HollaMan", 0);
@@ -147,15 +149,20 @@ public class HomeFileFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
+    /**
+     * Handle the click on a recent file in the list
+     */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
         String uriString = recentFileUriList.get(position);
         Uri fileUri = Uri.parse(uriString);
         ((HomeActivity)getActivity()).processFile(fileUri);
-
     }
 
+    /**
+     * Load the reader activity for displaying a file to the user
+     * @param content Conetent of file as a string
+     */
     void showReader(String content) {
         Intent it = new Intent(getActivity(), ReaderActivity.class);
         it.putExtra(Utility.DOCUMENT_CONTENT_MESSAGE, content);
@@ -164,6 +171,9 @@ public class HomeFileFragment extends Fragment implements View.OnClickListener, 
         ReaderActivity.resetChatBot();
     }
 
+    /**
+     * Get article from the user's search query
+     */
     void getArticle(String q) {
         RequestParams params = new RequestParams();
 

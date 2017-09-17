@@ -24,6 +24,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         selectFile.setOnClickListener(this);
     }
 
+    /**
+     * Start ReaderActivity after reading file from uri
+     * @param uri URI of the local file
+     */
     void processFile(Uri uri) {
         try {
             String content = FileReader.readTextFromUri(this, uri);
@@ -38,6 +42,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * Handle the response after a file is picked by the user
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode,
                                  Intent resultData) {
