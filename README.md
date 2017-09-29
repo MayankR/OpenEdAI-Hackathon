@@ -45,6 +45,10 @@ Wikitrivia question generation code for quick prototyping has been used for the 
 
 Detailed description of api along with request and response format is available in the [README](https://github.com/MayankR/OpenEdAI-Hackathon/blob/master/Server-side/README.md) of server code.
 
+> Android Apk
+
+We have released an apk for the android client. Users can install app in Android phones and can use ReadEx.![Download](https://raw.githubusercontent.com/MayankR/OpenEdAI-Hackathon/master/Android%20APK/ReadEx.apk)
+
 >About Us
 
 We are a set of four undergraduates pursuing Computer Science at IIT Delhi.
