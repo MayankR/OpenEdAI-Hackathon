@@ -47,7 +47,7 @@ Detailed description of api along with request and response format is available 
 
 > Android Apk
 
-We have released an apk for the android client. Users can install app in Android phones and can use ReadEx.![Download](https://raw.githubusercontent.com/MayankR/OpenEdAI-Hackathon/master/Android%20APK/ReadEx.apk)
+We have released an apk for the android client. Users can install app in Android phones and can use ReadEx. [Download](https://raw.githubusercontent.com/MayankR/OpenEdAI-Hackathon/master/Android%20APK/ReadEx.apk)
 
 >About Us
 
